@@ -1,0 +1,37 @@
+{
+  "passed": true,
+  "observed_scenarios": [
+    "contradiction_drift",
+    "locomo_like_trace",
+    "longmem_like_trace",
+    "personal_assistant_drift",
+    "semi_real_trace",
+    "tool_api_drift"
+  ],
+  "track_results": [
+    {
+      "track_id": "internal_controlled",
+      "required_for_publication": false,
+      "expected_scenarios": [
+        "contradiction_drift",
+        "personal_assistant_drift",
+        "semi_real_trace",
+        "tool_api_drift"
+      ],
+      "missing_scenarios": [],
+      "passed": true
+    },
+    {
+      "track_id": "external_proxy_v1",
+      "required_for_publication": true,
+      "expected_scenarios": [
+        "locomo_like_trace",
+        "longmem_like_trace"
+      ],
+      "missing_scenarios": [],
+      "passed": true
+    }
+  ],
+  "eval_report_path": "artifacts\\eval_31c52767-4313-4008-bdb3-19c30445afdb.json",
+  "registry_path": "configs/eval/benchmark_registry.json"
+}

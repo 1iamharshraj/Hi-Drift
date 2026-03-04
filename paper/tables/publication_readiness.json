@@ -1,0 +1,64 @@
+{
+  "passed": false,
+  "reference_system": "HiDrift-full",
+  "policy_summary": {
+    "min_seeds": 10,
+    "required_external_scenarios": [
+      "locomo_like_trace",
+      "longmem_like_trace"
+    ],
+    "required_systems": [
+      "FlatMem-TopK",
+      "GenerativeAgents-style",
+      "HiDrift-full",
+      "HierMemory-noDrift",
+      "MemGPT-style",
+      "RAG-only"
+    ],
+    "alpha": 0.05,
+    "use_holm_adjusted_p": true
+  },
+  "gates": [
+    {
+      "gate_id": "G1_min_seeds",
+      "passed": true,
+      "details": "observed=10, required>=10"
+    },
+    {
+      "gate_id": "G2_external_benchmarks",
+      "passed": true,
+      "details": "missing=none"
+    },
+    {
+      "gate_id": "G3_baseline_coverage",
+      "passed": true,
+      "details": "missing=none"
+    },
+    {
+      "gate_id": "G4_success_gain",
+      "passed": false,
+      "details": "gain=0.0375, required>=0.1000"
+    },
+    {
+      "gate_id": "G5_latency_reduction",
+      "passed": true,
+      "details": "reduction=0.4176, required>=0.2500"
+    },
+    {
+      "gate_id": "G6_bloat_reduction",
+      "passed": false,
+      "details": "reduction=-0.2352, required>=0.3000"
+    },
+    {
+      "gate_id": "G7_significance",
+      "passed": false,
+      "details": "failures=RAG-only:adaptation_latency_p=0.0600"
+    },
+    {
+      "gate_id": "G8_hypothesis_reporting",
+      "passed": true,
+      "details": "observed=3, required>=3"
+    }
+  ],
+  "eval_report_path": "artifacts\\eval_31c52767-4313-4008-bdb3-19c30445afdb.json"
+}
