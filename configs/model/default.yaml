@@ -1,0 +1,7 @@
+llm:
+  provider: gemini
+  model_name: gemini-2.5-flash
+  engine: google-genai-api
+embedding:
+  model_name: bge-large-en-v1.5
+  dim: 64

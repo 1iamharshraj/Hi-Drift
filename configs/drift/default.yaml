@@ -1,0 +1,11 @@
+weights:
+  alpha: 0.45
+  beta: 0.30
+  gamma: 0.25
+trigger:
+  threshold: 0.35
+  hysteresis_turns: 3
+  cooldown_turns: 2
+calibration:
+  quantile: 0.95
+

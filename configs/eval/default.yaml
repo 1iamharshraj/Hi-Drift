@@ -1,0 +1,7 @@
+systems:
+  - RAG-only
+  - HierMemory-noDrift
+  - HiDrift-full
+n_turns: 120
+output_dir: artifacts
+

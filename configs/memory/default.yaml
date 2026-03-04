@@ -1,0 +1,19 @@
+working_maxlen: 20
+dedup_threshold: 0.88
+semantic_backend: hybrid
+graph_backend: networkx
+graph_persistence_path: artifacts/semantic_graph.json
+graph_query_hops: 2
+fusion_weights:
+  graph: 0.45
+  vector: 0.30
+  confidence: 0.15
+  stability: 0.10
+importance_weights:
+  recency: 0.25
+  usage: 0.25
+  reward: 0.30
+  stability: 0.20
+decay:
+  k: 0.08
+  min_importance: 0.10
