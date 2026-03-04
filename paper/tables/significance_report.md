@@ -1,44 +1,62 @@
-| System vs HiDrift-full | Metric | p_value | Effect Size (d) |
-| --- | --- | --- | --- |
-| RAG-only | task_success_rate | 0.008748 | 2.2603 |
-| RAG-only | retrieval_precision_at_k | 0.008748 | 2.2603 |
-| RAG-only | retrieval_recall_at_k | 0.008748 | 2.2603 |
-| RAG-only | hallucination_rate | 0.003249 | 372.2917 |
-| RAG-only | memory_bloat | 0.003249 | 207.2016 |
-| RAG-only | adaptation_latency | 0.059985 | -1.3281 |
-| RAG-only | stability_score | 0.008748 | 2.4826 |
-| HierMemory-noDrift | task_success_rate | 0.008748 | 2.7885 |
-| HierMemory-noDrift | retrieval_precision_at_k | 0.008748 | 2.7885 |
-| HierMemory-noDrift | retrieval_recall_at_k | 0.008748 | 2.7885 |
-| HierMemory-noDrift | hallucination_rate | 0.003249 | 77.0746 |
-| HierMemory-noDrift | memory_bloat | 0.003249 | 107.4087 |
-| HierMemory-noDrift | adaptation_latency | 0.008748 | -2.7474 |
-| HierMemory-noDrift | stability_score | 0.008748 | 2.7980 |
-| VectorOnly-noGraph | task_success_rate | 0.008748 | 2.2603 |
-| VectorOnly-noGraph | retrieval_precision_at_k | 0.008748 | 2.2603 |
-| VectorOnly-noGraph | retrieval_recall_at_k | 0.008748 | 2.2603 |
-| VectorOnly-noGraph | hallucination_rate | 1.000000 | 0.0000 |
-| VectorOnly-noGraph | memory_bloat | 1.000000 | 0.0000 |
-| VectorOnly-noGraph | adaptation_latency | 0.059985 | -1.3281 |
-| VectorOnly-noGraph | stability_score | 0.008748 | 2.4826 |
-| GraphOnly-noVector | task_success_rate | 1.000000 | 0.0000 |
-| GraphOnly-noVector | retrieval_precision_at_k | 1.000000 | 0.0000 |
-| GraphOnly-noVector | retrieval_recall_at_k | 1.000000 | 0.0000 |
-| GraphOnly-noVector | hallucination_rate | 1.000000 | 0.0000 |
-| GraphOnly-noVector | memory_bloat | 1.000000 | 0.0000 |
-| GraphOnly-noVector | adaptation_latency | 1.000000 | 0.0000 |
-| GraphOnly-noVector | stability_score | 1.000000 | 0.0000 |
-| HiDrift-noConflict | task_success_rate | 1.000000 | 0.0000 |
-| HiDrift-noConflict | retrieval_precision_at_k | 1.000000 | 0.0000 |
-| HiDrift-noConflict | retrieval_recall_at_k | 1.000000 | 0.0000 |
-| HiDrift-noConflict | hallucination_rate | 1.000000 | 0.0000 |
-| HiDrift-noConflict | memory_bloat | 1.000000 | 0.0000 |
-| HiDrift-noConflict | adaptation_latency | 1.000000 | 0.0000 |
-| HiDrift-noConflict | stability_score | 1.000000 | 0.0000 |
-| HiDrift-noDriftSignal | task_success_rate | 0.008748 | 2.6053 |
-| HiDrift-noDriftSignal | retrieval_precision_at_k | 0.008748 | 2.6053 |
-| HiDrift-noDriftSignal | retrieval_recall_at_k | 0.008748 | 2.6053 |
-| HiDrift-noDriftSignal | hallucination_rate | 0.003249 | 121.2688 |
-| HiDrift-noDriftSignal | memory_bloat | 0.003249 | 131.0438 |
-| HiDrift-noDriftSignal | adaptation_latency | 0.008748 | -2.3251 |
-| HiDrift-noDriftSignal | stability_score | 0.008748 | 2.6913 |
+| System vs HiDrift-full | Metric | p_value | p_value_holm | Significant@0.05 | Effect Size (d) |
+| --- | --- | --- | --- | --- | --- |
+| RAG-only | task_success_rate | 0.008748 | 0.043739 | True | 2.2603 |
+| RAG-only | retrieval_precision_at_k | 0.008748 | 0.043739 | True | 2.2603 |
+| RAG-only | retrieval_recall_at_k | 0.008748 | 0.043739 | True | 2.2603 |
+| RAG-only | hallucination_rate | 0.003249 | 0.032492 | True | 372.2917 |
+| RAG-only | constraint_violation_rate | 0.003249 | 0.032492 | True | 15.3496 |
+| RAG-only | memory_bloat | 0.003249 | 0.032492 | True | 207.2016 |
+| RAG-only | adaptation_latency | 0.059985 | 0.059985 | False | -1.3281 |
+| RAG-only | stability_score | 0.008748 | 0.043739 | True | 2.4826 |
+| RAG-only | avg_turn_latency_ms | 0.003249 | 0.032492 | True | 8.7356 |
+| RAG-only | consolidation_events_per_100_turns | 0.003249 | 0.032492 | True | 38.9724 |
+| HierMemory-noDrift | task_success_rate | 0.008748 | 0.043739 | True | 2.7885 |
+| HierMemory-noDrift | retrieval_precision_at_k | 0.008748 | 0.043739 | True | 2.7885 |
+| HierMemory-noDrift | retrieval_recall_at_k | 0.008748 | 0.043739 | True | 2.7885 |
+| HierMemory-noDrift | hallucination_rate | 0.003249 | 0.032492 | True | 77.0746 |
+| HierMemory-noDrift | constraint_violation_rate | 0.003249 | 0.032492 | True | 19.9479 |
+| HierMemory-noDrift | memory_bloat | 0.003249 | 0.032492 | True | 107.4087 |
+| HierMemory-noDrift | adaptation_latency | 0.008748 | 0.043739 | True | -2.7474 |
+| HierMemory-noDrift | stability_score | 0.008748 | 0.043739 | True | 2.7980 |
+| HierMemory-noDrift | avg_turn_latency_ms | 0.003249 | 0.032492 | True | 9.2760 |
+| HierMemory-noDrift | consolidation_events_per_100_turns | 0.003249 | 0.032492 | True | 36.0339 |
+| VectorOnly-noGraph | task_success_rate | 0.008748 | 0.078730 | False | 2.2603 |
+| VectorOnly-noGraph | retrieval_precision_at_k | 0.008748 | 0.078730 | False | 2.2603 |
+| VectorOnly-noGraph | retrieval_recall_at_k | 0.008748 | 0.078730 | False | 2.2603 |
+| VectorOnly-noGraph | hallucination_rate | 1.000000 | 1.000000 | False | 0.0000 |
+| VectorOnly-noGraph | constraint_violation_rate | 1.000000 | 1.000000 | False | 0.0000 |
+| VectorOnly-noGraph | memory_bloat | 1.000000 | 1.000000 | False | 0.0000 |
+| VectorOnly-noGraph | adaptation_latency | 0.059985 | 0.299925 | False | -1.3281 |
+| VectorOnly-noGraph | stability_score | 0.008748 | 0.078730 | False | 2.4826 |
+| VectorOnly-noGraph | avg_turn_latency_ms | 0.003249 | 0.032492 | True | -1.2818 |
+| VectorOnly-noGraph | consolidation_events_per_100_turns | 1.000000 | 1.000000 | False | 0.0000 |
+| GraphOnly-noVector | task_success_rate | 1.000000 | 1.000000 | False | 0.0000 |
+| GraphOnly-noVector | retrieval_precision_at_k | 1.000000 | 1.000000 | False | 0.0000 |
+| GraphOnly-noVector | retrieval_recall_at_k | 1.000000 | 1.000000 | False | 0.0000 |
+| GraphOnly-noVector | hallucination_rate | 1.000000 | 1.000000 | False | 0.0000 |
+| GraphOnly-noVector | constraint_violation_rate | 1.000000 | 1.000000 | False | 0.0000 |
+| GraphOnly-noVector | memory_bloat | 1.000000 | 1.000000 | False | 0.0000 |
+| GraphOnly-noVector | adaptation_latency | 1.000000 | 1.000000 | False | 0.0000 |
+| GraphOnly-noVector | stability_score | 1.000000 | 1.000000 | False | 0.0000 |
+| GraphOnly-noVector | avg_turn_latency_ms | 0.395151 | 1.000000 | False | -0.2568 |
+| GraphOnly-noVector | consolidation_events_per_100_turns | 1.000000 | 1.000000 | False | 0.0000 |
+| HiDrift-noConflict | task_success_rate | 1.000000 | 1.000000 | False | 0.0000 |
+| HiDrift-noConflict | retrieval_precision_at_k | 1.000000 | 1.000000 | False | 0.0000 |
+| HiDrift-noConflict | retrieval_recall_at_k | 1.000000 | 1.000000 | False | 0.0000 |
+| HiDrift-noConflict | hallucination_rate | 1.000000 | 1.000000 | False | 0.0000 |
+| HiDrift-noConflict | constraint_violation_rate | 1.000000 | 1.000000 | False | 0.0000 |
+| HiDrift-noConflict | memory_bloat | 1.000000 | 1.000000 | False | 0.0000 |
+| HiDrift-noConflict | adaptation_latency | 1.000000 | 1.000000 | False | 0.0000 |
+| HiDrift-noConflict | stability_score | 1.000000 | 1.000000 | False | 0.0000 |
+| HiDrift-noConflict | avg_turn_latency_ms | 0.483379 | 1.000000 | False | 0.3903 |
+| HiDrift-noConflict | consolidation_events_per_100_turns | 1.000000 | 1.000000 | False | 0.0000 |
+| HiDrift-noDriftSignal | task_success_rate | 0.008748 | 0.043739 | True | 2.6053 |
+| HiDrift-noDriftSignal | retrieval_precision_at_k | 0.008748 | 0.043739 | True | 2.6053 |
+| HiDrift-noDriftSignal | retrieval_recall_at_k | 0.008748 | 0.043739 | True | 2.6053 |
+| HiDrift-noDriftSignal | hallucination_rate | 0.003249 | 0.032492 | True | 121.2688 |
+| HiDrift-noDriftSignal | constraint_violation_rate | 0.003249 | 0.032492 | True | 9.7456 |
+| HiDrift-noDriftSignal | memory_bloat | 0.003249 | 0.032492 | True | 131.0438 |
+| HiDrift-noDriftSignal | adaptation_latency | 0.008748 | 0.043739 | True | -2.3251 |
+| HiDrift-noDriftSignal | stability_score | 0.008748 | 0.043739 | True | 2.6913 |
+| HiDrift-noDriftSignal | avg_turn_latency_ms | 0.003249 | 0.032492 | True | 9.7191 |
+| HiDrift-noDriftSignal | consolidation_events_per_100_turns | 0.003249 | 0.032492 | True | 36.7685 |
