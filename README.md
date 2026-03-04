@@ -15,6 +15,7 @@ It combines:
 4. API contract source: `src/hidrift/api.py`
 5. Config defaults: `configs/`
 6. Scripts for eval/plots/calibration: `scripts/`
+7. Publication gate checks: `scripts/check_publication_readiness.py`, `scripts/check_benchmark_registry.py`
 
 ## Table Of Contents
 1. Project Goals
@@ -172,6 +173,17 @@ python scripts/run_eval.py
 python scripts/run_eval_matrix.py --config configs/eval/matrix_publishable.json
 ```
 
+### Run publication gates
+```powershell
+python scripts/check_benchmark_registry.py
+python scripts/check_publication_readiness.py
+```
+
+### One-command publishability pipeline
+```powershell
+make paper_ready
+```
+
 Output:
 1. `artifacts/eval_<uuid>.json`
 2. `artifacts/eval_matrix_<uuid>.json` (for matrix runs)
@@ -180,6 +192,9 @@ Output:
    - multi-scenario reports (`personal_assistant_drift`, `tool_api_drift`, `contradiction_drift`, `semi_real_trace`, `locomo_like_trace`, `longmem_like_trace`)
    - per-turn trace logs
    - significance summary vs `HiDrift-full` with Holm-Bonferroni correction
+3. Publication checks generate:
+   - `paper/tables/benchmark_registry_check.md`
+   - `paper/tables/publication_readiness.md`
 
 ### Drift threshold calibration artifact
 ```powershell
@@ -244,5 +259,7 @@ Suggested loop:
 4. Run `python scripts/export_figures.py`
 5. Review `paper/tables/significance_report.md` for p-values/effect sizes
 6. Review `paper/tables/hypothesis_results.md` and `paper/tables/cost_latency_table.md`
-7. Review `paper/figures/scenario_success_heatmap.png` and trace plots for discriminative behavior
-7. Update docs when behavior or contracts change
+7. Run `python scripts/check_benchmark_registry.py`
+8. Run `python scripts/check_publication_readiness.py`
+9. Review `paper/figures/scenario_success_heatmap.png` and trace plots for discriminative behavior
+10. Update docs when behavior or contracts change

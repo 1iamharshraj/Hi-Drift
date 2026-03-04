@@ -116,10 +116,17 @@ Run publishable matrix:
 python scripts/run_eval_matrix.py --config configs/eval/matrix_publishable.json
 ```
 
+Run publication gates:
+```powershell
+python scripts/check_benchmark_registry.py
+python scripts/check_publication_readiness.py
+```
+
 Expected:
 1. New `artifacts/eval_*.json` file created
 2. Matrix run also creates `artifacts/eval_matrix_*.json`
 3. JSON contains `systems`, `scenario_reports`, `traces`, `benchmark_protocol`, and `significance_vs_hidrift_full`
+4. Publication gate files are created in `paper/tables`
 
 Run calibration:
 
@@ -157,6 +164,8 @@ Expected outputs:
 pytest -q
 python scripts/run_eval_matrix.py --config configs/eval/matrix_publishable.json
 python scripts/export_figures.py
+python scripts/check_benchmark_registry.py
+python scripts/check_publication_readiness.py
 ```
 
 ## 9. Failure Diagnosis Guide

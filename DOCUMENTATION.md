@@ -256,6 +256,34 @@ python scripts/train_calibrator.py
 Generates:
 1. `artifacts/calibration.json`
 
+### 10.5 Benchmark registry validation
+Command:
+```powershell
+python scripts/check_benchmark_registry.py
+```
+
+Outputs:
+1. `paper/tables/benchmark_registry_check.json`
+2. `paper/tables/benchmark_registry_check.md`
+
+### 10.6 Publication readiness gates
+Command:
+```powershell
+python scripts/check_publication_readiness.py
+```
+
+Gate outputs:
+1. `paper/tables/publication_readiness.json`
+2. `paper/tables/publication_readiness.md`
+
+Current gate families:
+1. minimum seeds
+2. required external scenario coverage
+3. baseline coverage
+4. practical gain thresholds
+5. significance thresholds (Holm-adjusted)
+6. hypothesis-report completeness
+
 ## 11. Visualization Pipeline
 Command:
 ```powershell

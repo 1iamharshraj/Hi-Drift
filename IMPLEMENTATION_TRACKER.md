@@ -11,6 +11,7 @@ Upgrade HiDrift from prototype evaluation to publishable-grade evidence pipeline
 - [x] M5: Per-turn trace logging and discriminative visualizations
 - [x] M6: Tests updated for new report schema and robustness
 - [x] M7: Docs fully aligned with publishable workflow
+- [x] M8: Automated publication readiness gates
 
 ## Task Board
 
@@ -31,6 +32,7 @@ Upgrade HiDrift from prototype evaluation to publishable-grade evidence pipeline
 - [x] Paired permutation significance test
 - [x] Effect size estimates
 - [x] Save significance report artifact
+- [x] Add publication pass/fail gate checks
 
 ### Visualization
 - [x] Scenario-wise comparison plots
@@ -43,3 +45,4 @@ Upgrade HiDrift from prototype evaluation to publishable-grade evidence pipeline
 - [x] Update DOCUMENTATION with methods + stats protocol
 - [x] Update TESTING with benchmark/stat validation
 - [x] Update ARCHITECTURE with benchmark/report flow
+- [x] Add explicit publication gate outputs and commands
