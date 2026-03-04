@@ -1,55 +1,260 @@
-# HiDrift Full Documentation
+# HiDrift Technical Documentation
 
-## 1. Overview
+## 1. Purpose
+This document is the detailed technical reference for HiDrift implementation, covering runtime architecture, memory internals, API contracts, configuration semantics, evaluation methodology, and operational workflows.
 
-HiDrift is a drift-aware hierarchical memory framework for long-horizon agents.
-Detailed diagrams are available in `ARCHITECTURE.md`.
+For diagram-first explanation, see `ARCHITECTURE.md`.  
+For quick operational onboarding, see `README.md`.
+For dedicated test execution and validation flows, see `TESTING.md`.
 
-Core goals:
-- Detect drift in user/task/performance distributions over time
-- Store interactions across multi-level memory (working, episodic, semantic)
-- Consolidate episodic memory into semantic memory when drift or schedule triggers
-- Evaluate long-horizon behavior against baselines with reproducible artifacts
+## 2. System Summary
+HiDrift is a long-horizon agent memory stack with:
+1. Drift-aware control loop
+2. Hierarchical memory (working, episodic, semantic)
+3. Hybrid semantic memory retrieval (vector + graph)
+4. Consolidation from episodes to semantic facts
+5. Reproducible testing and reporting pipeline
 
-## 2. Current Implementation Status
+## 3. Runtime Components
 
-Implemented:
-- Core memory hierarchy and retrieval
-- Drift scoring with hysteresis/cooldown triggering
-- Consolidation worker (cluster, summarize, dedup, decay)
-- Gemini integration (`gemini-2.5-flash`) with API-key based generation
-- FastAPI endpoints for ingest/retrieve/drift/consolidation
-- Synthetic evaluation harness and baseline runner
-- Tests and visualization export pipeline
+### 3.1 Agent Runtime
+Main entrypoint:
+1. `src/hidrift/agent/runtime.py`
 
-Not fully implemented yet (research roadmap items):
-- Real vector DB backend integration (currently in-memory structures)
-- Full MLflow/Hydra orchestration
-- Advanced statistical significance pipeline beyond mean aggregation
+Responsibilities:
+1. Turn handling (`handle_turn`)
+2. Optional LLM response generation (Gemini/fallback)
+3. Drift signal processing
+4. Memory ingestion and retrieval orchestration
+5. Consolidation trigger execution
 
-## 3. Repository Structure
+### 3.2 Drift Service
+Files:
+1. `src/hidrift/drift/features.py`
+2. `src/hidrift/drift/scoring.py`
+3. `src/hidrift/drift/service.py`
 
-Top-level:
-- `src/hidrift/` core package
-- `configs/` model/memory/drift/eval configs
-- `scripts/` utility and pipeline scripts
-- `tests/` unit/integration/regression tests
-- `paper/` figures/tables and paper outline
-- `artifacts/` generated run artifacts
+Signal components:
+1. Behavioral shift (embedding distance from running mean)
+2. Task shift (KL divergence over label distribution)
+3. Performance drop (moving-window reward decline)
 
-Important modules:
-- `src/hidrift/agent/runtime.py`
-- `src/hidrift/memory/`
-- `src/hidrift/drift/`
-- `src/hidrift/consolidation/`
-- `src/hidrift/eval/`
-- `src/hidrift/api.py`
-- `src/hidrift/llm/`
+Trigger policy:
+1. Threshold
+2. Hysteresis count
+3. Cooldown turns
 
-## 4. Environment Setup
+### 3.3 Memory Service
+Files:
+1. `src/hidrift/memory/working.py`
+2. `src/hidrift/memory/episodic.py`
+3. `src/hidrift/memory/semantic.py`
+4. `src/hidrift/memory/service.py`
 
-### 4.1 Python venv setup (PowerShell)
+Hierarchy:
+1. Working memory: short recent-turn deque
+2. Episodic memory: full episode records with embeddings/importance
+3. Semantic memory:
+   - legacy vector semantic items
+   - structured semantic facts
+   - graph store with persistence
 
+### 3.4 Consolidation
+Files:
+1. `src/hidrift/consolidation/cluster.py`
+2. `src/hidrift/consolidation/summarize.py`
+3. `src/hidrift/consolidation/worker.py`
+
+Flow:
+1. Gather episodic records
+2. Apply decay and pruning
+3. Group by goal cluster
+4. Generate summary statement(s)
+5. Convert to structured semantic facts
+6. Write facts to graph+vector semantic memory
+7. Resolve fact conflicts
+
+## 4. Hybrid Semantic Graph Layer
+
+### 4.1 Modules
+1. `src/hidrift/semantic_graph/adapter.py`
+2. `src/hidrift/semantic_graph/networkx_store.py`
+3. `src/hidrift/semantic_graph/query.py`
+4. `src/hidrift/semantic_graph/reasoning.py`
+
+### 4.2 Graph Backend
+Default: `networkx.MultiDiGraph` in-memory.
+
+Persistence:
+1. Writes graph + fact snapshots to `artifacts/semantic_graph.json`
+2. Loads snapshot on semantic memory initialization if file exists
+
+### 4.3 Fact Conflict Resolution
+Conflict resolution policy in current implementation:
+1. Group by `(subject, relation)`
+2. Keep winner by:
+   - highest `confidence`
+   - then highest `version`
+   - then latest `created_at`
+3. Mark only winner as `is_active=True`
+
+## 5. Data Schemas
+Defined in `src/hidrift/schemas.py`.
+
+Primary runtime schemas:
+1. `InteractionEvent`
+2. `EpisodeRecord`
+3. `DriftSignal`
+4. `SemanticMemoryItem` (vector layer)
+5. `SemanticFact` (structured semantic graph layer)
+6. `GraphNode`, `GraphEdge`
+7. `SemanticRelation`
+
+`SemanticFact` key fields:
+1. Identity: `fact_id`, `version`
+2. Triple-like core: `subject`, `relation`, `object`
+3. Quality: `confidence`, `stability`
+4. Lifecycle: `is_active`, `valid_from`, `valid_to`
+5. Traceability: `evidence_episode_ids`, `drift_event_ids`
+
+## 6. Configuration Reference
+
+### 6.1 Model config
+File: `configs/model/default.yaml`
+1. `llm.provider`: default `gemini`
+2. `llm.model_name`: default `gemini-2.5-flash`
+3. embedding metadata placeholders
+
+### 6.2 Memory config
+File: `configs/memory/default.yaml`
+1. `working_maxlen`
+2. `dedup_threshold`
+3. `semantic_backend`: `hybrid`
+4. `graph_backend`: `networkx`
+5. `graph_persistence_path`
+6. `graph_query_hops`
+7. `fusion_weights.graph`
+8. `fusion_weights.vector`
+9. `fusion_weights.confidence`
+10. `fusion_weights.stability`
+11. importance and decay controls
+
+### 6.3 Drift config
+File: `configs/drift/default.yaml`
+1. weighted coefficients
+2. trigger threshold/hysteresis/cooldown
+3. calibration quantile
+
+### 6.4 Eval config
+Files:
+1. `configs/eval/default.yaml`
+2. `configs/eval/seeds.yaml`
+
+## 7. API Contract
+Implemented in `src/hidrift/api.py`.
+
+### 7.1 Core endpoints
+1. `POST /v1/memory/ingest`
+2. `POST /v1/memory/retrieve`
+3. `GET /v1/drift/current`
+4. `POST /v1/consolidation/run`
+5. `GET /v1/eval/run/{run_id}`
+
+### 7.2 Semantic endpoints
+1. `GET /v1/semantic/facts`
+2. `GET /v1/semantic/graph/subgraph`
+3. `POST /v1/semantic/facts/upsert`
+4. `GET /v1/semantic/conflicts`
+
+### 7.3 Retrieve response shape
+`/v1/memory/retrieve` returns:
+1. `working`
+2. `episodic`
+3. `semantic`
+4. `hard_constraints`
+5. `supporting_context`
+
+## 8. LLM Provider Behavior
+
+### 8.1 Gemini runtime
+Production API runtime (`create_app`) starts with:
+1. `llm_provider="gemini"`
+2. `llm_model="gemini-2.5-flash"`
+3. `require_llm=True`
+
+### 8.2 Fallback runtime
+Evaluation baseline builder (`src/hidrift/eval/baselines.py`) uses:
+1. `llm_provider="fallback"`
+2. `require_llm=False`
+
+Reason:
+1. Keep tests/eval deterministic under API quota/rate constraints
+2. Prevent CI/local regression failures from external API limits
+
+## 9. Testing Strategy
+
+### 9.1 Unit tests
+Coverage includes:
+1. drift scoring
+2. memory router monotonicity
+3. consolidation decay/dedup
+4. semantic graph upsert/conflict/hybrid retrieve behavior
+
+### 9.2 Integration tests
+Coverage includes:
+1. end-to-end turn ingestion + retrieval
+2. consolidation invocation under forced drift
+3. semantic fact creation and superseded fact deactivation
+
+### 9.3 Regression tests
+Coverage includes:
+1. fixed-seed eval output shape
+2. no-drift guard checks
+3. hybrid proxy metric threshold behavior
+
+## 10. Evaluation Pipeline
+
+### 10.1 Run evaluation
+Command:
+```powershell
+python scripts/run_eval.py
+```
+
+Generates:
+1. `artifacts/eval_<uuid>.json`
+
+### 10.2 Calibrate drift threshold
+Command:
+```powershell
+python scripts/train_calibrator.py
+```
+
+Generates:
+1. `artifacts/calibration.json`
+
+## 11. Visualization Pipeline
+Command:
+```powershell
+python scripts/export_figures.py
+```
+
+Outputs:
+1. Aggregate tables:
+   - `paper/tables/aggregate_metrics.md`
+   - `paper/tables/aggregate_metrics.json`
+2. Hybrid semantic table:
+   - `paper/tables/hybrid_semantic_metrics.md`
+3. Charts:
+   - `paper/figures/aggregate_higher_is_better.png`
+   - `paper/figures/aggregate_lower_is_better.png`
+   - `paper/figures/hybrid_constraint_hit_rate.png`
+   - `paper/figures/conflict_resolution_accuracy.png`
+   - `paper/figures/drift_trigger_timeline.png`
+   - `paper/figures/consolidation_event_count.png`
+
+## 12. Setup And Operations
+
+### 12.1 Environment setup
 ```powershell
 python -m venv venv
 .\venv\Scripts\Activate.ps1
@@ -57,255 +262,51 @@ python -m pip install --upgrade pip
 pip install -e ".[dev,api]"
 ```
 
-### 4.2 Configure Gemini
-
-Option A: environment variables in terminal
-
-```powershell
-$env:GEMINI_API_KEY="your_real_key"
-$env:HIDRIFT_LLM_PROVIDER="gemini"
-$env:HIDRIFT_LLM_MODEL="gemini-2.5-flash"
-```
-
-Option B: `.env` in repository root
-
+### 12.2 `.env` example
 ```env
 GEMINI_API_KEY=your_real_key
 HIDRIFT_LLM_PROVIDER=gemini
 HIDRIFT_LLM_MODEL=gemini-2.5-flash
 ```
 
-Notes:
-- `.env` is auto-loaded by `src/hidrift/llm/factory.py`
-- Model typo form `gemini-2,5-flash` is normalized to `gemini-2.5-flash`
-
-### 4.3 Validate Gemini connectivity
-
+### 12.3 Connectivity check
 ```powershell
 python scripts/check_gemini.py
 ```
 
-Expected output: model response containing `GEMINI_OK`.
+## 13. Troubleshooting
 
-## 5. Architecture
-
-Data flow:
-1. Interaction enters runtime (`AgentRuntime.handle_turn`)
-2. Drift service computes `D_t` signal
-3. Event is routed into working + episodic memory
-4. Retrieval fuses working/episodic/semantic context
-5. Consolidation is triggered when drift threshold policy is met
-6. Consolidation writes semantic memory items and decays episodic importance
-
-### 5.1 Memory layers
-
-Working memory:
-- Ring buffer of recent interactions
-
-Episodic memory:
-- Per-turn records with goal/actions/outcomes/reward/embedding/importance
-
-Semantic memory:
-- Consolidated memory statements with confidence/stability/evidence linkage
-
-### 5.2 Drift model
-
-Score components:
-- Behavioral shift (embedding deviation)
-- Task shift (distribution divergence)
-- Performance drop (reward trend degradation)
-
-Weighted score:
-- `alpha=0.45`, `beta=0.30`, `gamma=0.25`
-
-Trigger policy:
-- Threshold + hysteresis (`m=3`) + cooldown
-
-### 5.3 Consolidation model
-
-Pipeline:
-1. Gather episodes
-2. Apply decay
-3. Cluster episodes by goal (current deterministic baseline)
-4. Summarize each cluster (Gemini-backed with fallback)
-5. Deduplicate semantic memory
-6. Store semantic items with evidence IDs
-
-## 6. API Usage
-
-Run API:
-
-```powershell
-uvicorn hidrift.api:create_app --factory --reload
-```
-
-Open Swagger UI:
-- `http://127.0.0.1:8000/docs`
-
-Endpoints:
-- `POST /v1/memory/ingest`
-- `POST /v1/memory/retrieve`
-- `GET /v1/drift/current`
-- `POST /v1/consolidation/run`
-- `GET /v1/eval/run/{run_id}`
-- `GET /v1/semantic/facts?query=...`
-- `GET /v1/semantic/graph/subgraph?entity_id=...&hops=2`
-- `POST /v1/semantic/facts/upsert`
-- `GET /v1/semantic/conflicts?entity_id=...`
-
-### 6.1 Example ingest request
-
-You can omit `agent_output` to let Gemini generate it.
-
-```json
-{
-  "session_id": "s1",
-  "user_id": "u1",
-  "user_input": "Plan my day in concise format",
-  "task_label": "calendar"
-}
-```
-
-### 6.2 Example retrieve request
-
-```json
-{
-  "query": "user style preference",
-  "k_working": 5,
-  "k_episodic": 5,
-  "k_semantic": 5
-}
-```
-
-## 7. Testing
-
-Quick:
-
-```powershell
-pytest -q
-```
-
-Detailed with timing:
-
-```powershell
-pytest -v --durations=10
-```
-
-Test layout:
-- `tests/unit/` isolated logic tests
-- `tests/integration/` runtime flow tests
-- `tests/regression/` eval stability tests
-
-## 8. Evaluation Pipeline
-
-Run full evaluation:
-
-```powershell
-python scripts/run_eval.py
-```
-
-Generates:
-- `artifacts/eval_<run_id>.json`
-
-Calibrate drift threshold artifact:
-
-```powershell
-python scripts/train_calibrator.py
-```
-
-Generates:
-- `artifacts/calibration.json`
-
-## 9. Visualization and Reporting
-
-Export tables and charts:
-
-```powershell
-python scripts/export_figures.py
-```
-
-Outputs:
-- `paper/tables/aggregate_metrics.md`
-- `paper/tables/aggregate_metrics.json`
-- `paper/tables/hybrid_semantic_metrics.md`
-- `paper/figures/aggregate_higher_is_better.png`
-- `paper/figures/aggregate_lower_is_better.png`
-- `paper/figures/hybrid_constraint_hit_rate.png`
-- `paper/figures/conflict_resolution_accuracy.png`
-
-Recommended demo sequence:
-1. `pytest -q`
-2. `python scripts/check_gemini.py`
-3. `python scripts/run_eval.py`
-4. `python scripts/export_figures.py`
-5. Open `paper/tables/aggregate_metrics.md` and chart PNGs
-6. Start API and demonstrate `/docs`
-
-## 10. Gemini-Specific Troubleshooting
-
-### Error: `GEMINI_API_KEY is not set`
-
-Cause:
-- Key not exported in current shell and `.env` missing/incorrect
+### 13.1 Gemini key missing
+Symptom:
+1. `RuntimeError: GEMINI_API_KEY is not set`
 
 Fix:
-1. Verify `.env` exists at repo root
-2. Ensure line is exactly:
-   - `GEMINI_API_KEY=...`
-3. Restart terminal or re-run command in same shell
-4. Validate with:
-   - `python scripts/check_gemini.py`
+1. Set env var or create `.env` in repo root
+2. Re-run `python scripts/check_gemini.py`
 
-### Error: package import issue
+### 13.2 Gemini 429 quota/rate limit
+Symptom:
+1. `RESOURCE_EXHAUSTED`
 
 Fix:
-- Ensure venv is active
-- Reinstall editable package:
-  - `pip install -e ".[dev,api]"`
+1. Wait for quota reset or use paid/billed project
+2. Continue local tests/eval via fallback mode
 
-### API starts but Gemini fails at request time
-
-Cause:
-- API key invalid or network restriction
-
+### 13.3 Missing dependencies
 Fix:
-1. Recheck key
-2. Run `python scripts/check_gemini.py`
-3. Retry endpoint call from Swagger
+```powershell
+pip install -e ".[dev,api]"
+```
 
-## 11. Important Files Map
+## 14. Limitations
+1. Semantic graph backend is local `networkx`, not distributed
+2. Synthetic evaluation benchmark only
+3. Metrics are aggregate-focused, not full statistical significance suite
+4. Vector memory is lightweight in-process rather than dedicated vector DB
 
-Configuration:
-- `configs/model/default.yaml`
-- `configs/memory/default.yaml`
-- `configs/drift/default.yaml`
-- `configs/eval/default.yaml`
-- `configs/eval/seeds.yaml`
-
-Execution scripts:
-- `scripts/check_gemini.py`
-- `scripts/run_eval.py`
-- `scripts/export_figures.py`
-- `scripts/train_calibrator.py`
-
-Core runtime:
-- `src/hidrift/agent/runtime.py`
-- `src/hidrift/api.py`
-
-LLM:
-- `src/hidrift/llm/factory.py`
-- `src/hidrift/llm/gemini.py`
-- `src/hidrift/env.py`
-
-## 12. Known Limitations
-
-- Retrieval and storage are in-memory baseline implementations
-- Evaluation currently synthetic; real-world traces are future work
-- Metrics export is aggregate-first; richer experiment analytics can be added
-
-## 13. Next Recommended Upgrades
-
-1. Add persistent memory backend (LanceDB/Chroma)
-2. Add MLflow logging for each run and seed
-3. Add per-turn plots (drift score over time, consolidation trigger points)
-4. Add real benchmark datasets beyond synthetic assistant simulation
+## 15. Future Extension Points
+1. Replace networkx with Neo4j/Memgraph adapter while retaining interface
+2. Add LanceDB/FAISS integration for semantic vector persistence
+3. Add MLflow experiment tracking and Hydra config composition
+4. Add richer timeline-level plotting from raw turn traces
+5. Extend conflict policies with contradiction/supersession provenance scoring

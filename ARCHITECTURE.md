@@ -1,63 +1,101 @@
-# HiDrift Architecture
+# HiDrift Architecture And Flow Diagrams
 
-## System Architecture
+## 1. High-Level System
 
 ```mermaid
 graph TD
-    U[User Input] --> API[FastAPI Layer]
-    API --> RT[AgentRuntime]
-    RT --> DS[DriftService]
-    RT --> MS[MemoryService]
-    MS --> WM[WorkingMemory]
-    MS --> EM[EpisodicMemory]
-    MS --> SM[SemanticMemory]
-    SM --> VS[Vector Semantic Index]
-    SM --> GS[Semantic Graph Store]
-    RT --> CW[ConsolidationWorker]
-    CW --> EM
-    CW --> SM
-    RT --> LLM[Gemini/Fallback LLM]
+    User[User] --> API[FastAPI Layer]
+    API --> Runtime[AgentRuntime]
+    Runtime --> Drift[DriftService]
+    Runtime --> Memory[MemoryService]
+    Memory --> WM[WorkingMemory]
+    Memory --> EM[EpisodicMemory]
+    Memory --> SM[SemanticMemory]
+    SM --> Vector[Vector Semantic Index]
+    SM --> Graph[Semantic Graph Store]
+    Runtime --> Consolidator[ConsolidationWorker]
+    Consolidator --> EM
+    Consolidator --> SM
+    Runtime --> LLM[Gemini Or Fallback LLM]
+    Runtime --> API
 ```
 
-## Turn Lifecycle
+## 2. Request Lifecycle (Ingest)
 
 ```mermaid
 sequenceDiagram
-    participant User
-    participant API
-    participant Runtime
-    participant Drift
-    participant Memory
-    participant Consolidation
-    User->>API: POST /v1/memory/ingest
-    API->>Runtime: handle_turn(...)
-    Runtime->>Drift: process(event)
-    Drift-->>Runtime: DriftSignal
-    Runtime->>Memory: ingest_interaction(event, drift)
-    Runtime->>Memory: retrieve(query)
-    alt drift triggered
-      Runtime->>Consolidation: run_once()
-      Consolidation->>Memory: write semantic items + facts
+    participant U as User
+    participant A as API
+    participant R as AgentRuntime
+    participant D as DriftService
+    participant M as MemoryService
+    participant C as ConsolidationWorker
+
+    U->>A: POST /v1/memory/ingest
+    A->>R: handle_turn(payload)
+    alt agent_output omitted
+        R->>R: llm.generate()
     end
-    Runtime-->>API: event + drift + retrieval bundle
-    API-->>User: JSON response
+    R->>D: process(event)
+    D-->>R: DriftSignal
+    R->>M: ingest_interaction(event, drift)
+    R->>M: retrieve(query)
+    alt drift.triggered == true
+        R->>C: run_once()
+        C->>M: write semantic items/facts
+    end
+    R-->>A: event + drift + retrieval summary
+    A-->>U: response JSON
 ```
 
-## Hybrid Retrieval Flow
+## 3. Drift Detection Internals
 
 ```mermaid
 flowchart LR
-    Q[Query] --> E[Embed Query]
-    E --> V[Vector Semantic Search]
-    E --> G[Graph Fact Scoring]
-    G --> HC[Hard Constraints]
-    V --> SC[Supporting Context]
-    HC --> F[Fusion Ranker]
-    SC --> F
-    F --> R[Final Retrieval Bundle]
+    Event[InteractionEvent] --> Embed[Embedding]
+    Embed --> Behav[Behavioral Shift]
+    Event --> Task[Task Distribution Shift]
+    Event --> Perf[Performance Drop]
+    Behav --> Score[Weighted Drift Score]
+    Task --> Score
+    Perf --> Score
+    Score --> Hys[Hysteresis Check]
+    Hys --> Trig{Trigger?}
+    Trig -->|Yes| Consolidate[Consolidation Trigger]
+    Trig -->|No| Continue[Continue Turn Loop]
 ```
 
-## Drift Trigger State Machine
+## 4. Hybrid Retrieval Pipeline
+
+```mermaid
+flowchart TB
+    Q[User Query] --> QE[Query Embedding]
+    QE --> VS[Vector Similarity Over Semantic Facts]
+    QE --> GS[Graph Relevance Scoring]
+    GS --> HC[Hard Constraints]
+    VS --> SC[Supporting Context]
+    HC --> Fuse[Fusion Ranker]
+    SC --> Fuse
+    Fuse --> Bundle[Retrieval Bundle]
+    Bundle --> Response[Agent Uses Constraints + Context]
+```
+
+## 5. Semantic Fact Consolidation Path
+
+```mermaid
+flowchart LR
+    Episodic[Episodic Records] --> Decay[Decay + Prune]
+    Decay --> Cluster[Cluster By Goal]
+    Cluster --> Summarize[LLM Or Deterministic Summary]
+    Summarize --> Facts[Structured Semantic Facts]
+    Facts --> GraphWrite[Write Graph Nodes And Edges]
+    Facts --> VectorWrite[Write Vector Semantic Facts]
+    GraphWrite --> Conflict[Conflict Resolution]
+    VectorWrite --> Conflict
+    Conflict --> Active[Active Fact Set]
+```
+
+## 6. Drift Trigger State Machine
 
 ```mermaid
 stateDiagram-v2
@@ -66,33 +104,92 @@ stateDiagram-v2
     Watch --> Stable: score <= threshold
     Watch --> Triggered: above threshold for m turns
     Triggered --> Cooldown
-    Cooldown --> Stable: cooldown expires
+    Cooldown --> Stable: cooldown turns elapsed
 ```
 
-## Semantic Graph ER Model
+## 7. Semantic Graph Entity Model
 
 ```mermaid
 erDiagram
-    USER ||--o{ SEMANTIC_FACT : HAS_FACT
-    TASK ||--o{ SEMANTIC_FACT : APPLIES_TO
-    TOOL ||--o{ SEMANTIC_FACT : USES_TOOL
+    SEMANTIC_FACT {
+        string fact_id
+        string subject
+        string relation
+        string object
+        float confidence
+        bool is_active
+        int version
+    }
+    EPISODE {
+        string episode_id
+    }
+    DRIFT_EVENT {
+        string drift_id
+    }
+    ENTITY {
+        string entity_id
+        string label
+    }
+
+    ENTITY ||--o{ SEMANTIC_FACT : HAS_FACT
     SEMANTIC_FACT ||--o{ EPISODE : OBSERVED_IN
+    SEMANTIC_FACT ||--o{ DRIFT_EVENT : TRIGGERED_BY_DRIFT
     SEMANTIC_FACT ||--o{ SEMANTIC_FACT : SUPPORTS
     SEMANTIC_FACT ||--o{ SEMANTIC_FACT : CONTRADICTS
     SEMANTIC_FACT ||--o{ SEMANTIC_FACT : SUPERSEDES
-    DRIFT_EVENT ||--o{ SEMANTIC_FACT : TRIGGERED_BY_DRIFT
 ```
 
-## Evaluation + Visualization Flow
+## 8. API Surface Map
+
+```mermaid
+graph LR
+    Client[Client] --> Ingest["POST /v1/memory/ingest"]
+    Client --> Retrieve["POST /v1/memory/retrieve"]
+    Client --> Drift["GET /v1/drift/current"]
+    Client --> Consolidate["POST /v1/consolidation/run"]
+    Client --> Eval["GET /v1/eval/run/{run_id}"]
+    Client --> Facts["GET /v1/semantic/facts"]
+    Client --> Subgraph["GET /v1/semantic/graph/subgraph"]
+    Client --> Upsert["POST /v1/semantic/facts/upsert"]
+    Client --> Conflicts["GET /v1/semantic/conflicts"]
+```
+
+## 9. Evaluation And Reporting Flow
 
 ```mermaid
 flowchart TB
-    A[run_eval.py] --> B["artifacts/eval_RUN_ID.json"]
-    B --> C[export_figures.py]
-    C --> D[paper/tables/aggregate_metrics.md]
-    C --> E[paper/tables/hybrid_semantic_metrics.md]
-    C --> F[paper/figures/aggregate_higher_is_better.png]
-    C --> G[paper/figures/aggregate_lower_is_better.png]
-    C --> H[paper/figures/hybrid_constraint_hit_rate.png]
-    C --> I[paper/figures/conflict_resolution_accuracy.png]
+    EvalScript[run_eval.py] --> EvalArtifact["artifacts/eval_RUN_ID.json"]
+    EvalArtifact --> ExportScript[export_figures.py]
+    ExportScript --> T1[paper/tables/aggregate_metrics.md]
+    ExportScript --> T2[paper/tables/aggregate_metrics.json]
+    ExportScript --> T3[paper/tables/hybrid_semantic_metrics.md]
+    ExportScript --> F1[paper/figures/aggregate_higher_is_better.png]
+    ExportScript --> F2[paper/figures/aggregate_lower_is_better.png]
+    ExportScript --> F3[paper/figures/hybrid_constraint_hit_rate.png]
+    ExportScript --> F4[paper/figures/conflict_resolution_accuracy.png]
+    ExportScript --> F5[paper/figures/drift_trigger_timeline.png]
+    ExportScript --> F6[paper/figures/consolidation_event_count.png]
+```
+
+## 10. Developer Navigation Map
+
+```mermaid
+graph TD
+    Root[Project Root] --> Src[src/hidrift]
+    Root --> Cfg[configs]
+    Root --> Scripts[scripts]
+    Root --> Tests[tests]
+    Root --> Paper[paper]
+
+    Src --> Agent[agent/runtime.py]
+    Src --> Drift[drift/*]
+    Src --> Memory[memory/*]
+    Src --> GraphMod[semantic_graph/*]
+    Src --> Consolidation[consolidation/*]
+    Src --> Eval[eval/*]
+    Src --> API[src/hidrift/api.py]
+
+    Tests --> Unit[tests/unit]
+    Tests --> Integration[tests/integration]
+    Tests --> Regression[tests/regression]
 ```
