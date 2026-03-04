@@ -3,6 +3,52 @@
 ## Purpose
 This guide explains each generated table and figure in `paper/tables` and `paper/figures`, how to interpret it, and how to present it in reports/slides.
 
+## 0. Artifact Map (Mermaid)
+### 0.1 Generation Flow
+```mermaid
+flowchart LR
+    A[run_eval_matrix.py] --> B[artifacts eval report]
+    B --> C[export_figures.py]
+    C --> D[paper tables]
+    C --> E[paper figures]
+```
+
+### 0.2 Table And Figure Taxonomy
+```mermaid
+flowchart TB
+    R[Results Artifacts] --> T[Tables]
+    R --> F[Figures]
+
+    T --> T1[aggregate_metrics]
+    T --> T2[scenario_metrics]
+    T --> T3[significance_report]
+    T --> T4[hypothesis_results]
+    T --> T5[cost_latency_table]
+    T --> T6[qualitative_failure_cases]
+
+    F --> F1[task_success_with_errorbars]
+    F --> F2[adaptation_latency_distribution]
+    F --> F3[scenario_success_heatmap]
+    F --> F4[drift_score_trace]
+    F --> F5[memory_growth_trace]
+    F --> F6[constraint_violation_trend]
+```
+
+### 0.3 Claim To Evidence Mapping
+```mermaid
+flowchart LR
+    C1[Effectiveness Claim] --> E1[aggregate_metrics]
+    C1 --> E2[task_success_with_errorbars]
+    C2[Fast Adaptation Claim] --> E3[adaptation_latency_distribution]
+    C2 --> E4[scenario_metrics]
+    C3[Robustness Claim] --> E5[scenario_success_heatmap]
+    C3 --> E6[significance_report]
+    C4[Efficiency Claim] --> E7[memory_growth_trace]
+    C4 --> E8[cost_latency_table]
+    C5[Reliability Claim] --> E9[constraint_violation_trend]
+    C5 --> E10[qualitative_failure_cases]
+```
+
 ## 1. Tables
 
 ### 1.1 `aggregate_metrics.md`
