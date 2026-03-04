@@ -1,4 +1,4 @@
-.PHONY: eval_all eval_matrix eval_iccv iccv_check benchmark_check publication_check paper_ready test
+.PHONY: eval_all eval_matrix prepare_official eval_iccv iccv_check benchmark_check publication_check paper_ready test
 
 eval_all:
 	python scripts/run_eval.py
@@ -6,7 +6,11 @@ eval_all:
 eval_matrix:
 	python scripts/run_eval_matrix.py --config configs/eval/matrix_publishable.json
 
+prepare_official:
+	python scripts/prepare_official_benchmarks.py
+
 eval_iccv:
+	python scripts/prepare_official_benchmarks.py
 	python scripts/run_eval_matrix.py --config configs/eval/matrix_iccv.json
 
 iccv_check:

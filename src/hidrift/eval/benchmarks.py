@@ -98,7 +98,7 @@ def build_scenario_suite(
             scenarios.append(_load_jsonl_scenario(path=spec.path, name=spec.name))
 
     if include_official and manifest_path:
-        official_scenarios, _ = load_official_scenarios(manifest_path)
+        official_scenarios, _ = load_official_scenarios(manifest_path, max_turns=n_turns)
         scenarios.extend(official_scenarios)
 
     # Filter empty scenarios so eval loops remain stable if external files are missing.

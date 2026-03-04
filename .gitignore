@@ -9,3 +9,6 @@ artifacts/*
 !artifacts/.gitkeep
 *.egg-info/
 .env
+data/benchmarks/external/locomo10.json
+data/benchmarks/official/**/*.json
+!data/benchmarks/official/**/*_official.jsonl

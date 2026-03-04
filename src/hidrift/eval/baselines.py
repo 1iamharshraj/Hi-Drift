@@ -59,7 +59,7 @@ def build_baseline(name: str) -> tuple[AgentRuntime, BaselineConfig]:
         return runtime, BaselineConfig(
             name=name,
             drift_enabled=False,
-            fixed_consolidation_interval=120,
+            fixed_consolidation_interval=999,
             use_graph_semantic=True,
             use_vector_semantic=True,
             use_conflict_resolution=True,
@@ -67,7 +67,7 @@ def build_baseline(name: str) -> tuple[AgentRuntime, BaselineConfig]:
     if name == "HiDrift-full":
         runtime = AgentRuntime(
             memory_service=MemoryService(graph_persistence_path=graph_path),
-            drift_service=DriftService(TriggerConfig(threshold=0.35)),
+            drift_service=DriftService(TriggerConfig(threshold=0.35, hysteresis_turns=2, cooldown_turns=1)),
             config=base_cfg,
         )
         return runtime, BaselineConfig(
@@ -81,7 +81,7 @@ def build_baseline(name: str) -> tuple[AgentRuntime, BaselineConfig]:
     if name == "VectorOnly-noGraph":
         runtime = AgentRuntime(
             memory_service=MemoryService(graph_persistence_path=graph_path),
-            drift_service=DriftService(TriggerConfig(threshold=0.35)),
+            drift_service=DriftService(TriggerConfig(threshold=0.35, hysteresis_turns=2, cooldown_turns=1)),
             config=base_cfg,
         )
         return runtime, BaselineConfig(
@@ -95,7 +95,7 @@ def build_baseline(name: str) -> tuple[AgentRuntime, BaselineConfig]:
     if name == "GraphOnly-noVector":
         runtime = AgentRuntime(
             memory_service=MemoryService(graph_persistence_path=graph_path),
-            drift_service=DriftService(TriggerConfig(threshold=0.35)),
+            drift_service=DriftService(TriggerConfig(threshold=0.35, hysteresis_turns=2, cooldown_turns=1)),
             config=base_cfg,
         )
         return runtime, BaselineConfig(
@@ -109,7 +109,7 @@ def build_baseline(name: str) -> tuple[AgentRuntime, BaselineConfig]:
     if name == "HiDrift-noConflict":
         runtime = AgentRuntime(
             memory_service=MemoryService(graph_persistence_path=graph_path),
-            drift_service=DriftService(TriggerConfig(threshold=0.35)),
+            drift_service=DriftService(TriggerConfig(threshold=0.35, hysteresis_turns=2, cooldown_turns=1)),
             config=base_cfg,
         )
         return runtime, BaselineConfig(

@@ -14,7 +14,7 @@ class OfficialBenchmarkSpec:
     required: bool = True
 
 
-def _load_jsonl(path: str, scenario_name: str) -> SimScenario:
+def _load_jsonl(path: str, scenario_name: str, max_turns: int | None = None) -> SimScenario:
     p = Path(path)
     if not p.exists():
         return SimScenario(name=scenario_name, turns=[], drift_turns=[])
@@ -35,10 +35,12 @@ def _load_jsonl(path: str, scenario_name: str) -> SimScenario:
         )
         if row.get("drift", False):
             drift_turns.append(idx)
+        if max_turns is not None and len(turns) >= max_turns:
+            break
     return SimScenario(name=scenario_name, turns=turns, drift_turns=drift_turns)
 
 
-def load_official_scenarios(manifest_path: str) -> tuple[list[SimScenario], list[str]]:
+def load_official_scenarios(manifest_path: str, max_turns: int | None = None) -> tuple[list[SimScenario], list[str]]:
     """
     Load "official" benchmark scenarios from local materialized files.
     Returns scenarios and a list of missing required scenario names.
@@ -55,7 +57,7 @@ def load_official_scenarios(manifest_path: str) -> tuple[list[SimScenario], list
     scenarios: list[SimScenario] = []
     missing_required: list[str] = []
     for spec in specs:
-        scenario = _load_jsonl(spec.path, scenario_name=spec.name)
+        scenario = _load_jsonl(spec.path, scenario_name=spec.name, max_turns=max_turns)
         if spec.required and not scenario.turns:
             missing_required.append(spec.name)
         scenarios.append(scenario)
