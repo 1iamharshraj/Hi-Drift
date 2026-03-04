@@ -50,13 +50,14 @@ def _write_main_table(report: dict, out_path: Path) -> None:
 def _write_significance_table(report: dict, out_path: Path) -> None:
     stats = report.get("significance_vs_hidrift_full", {})
     lines = [
-        "| System vs HiDrift-full | Metric | p_value | Effect Size (d) |",
-        "| --- | --- | --- | --- |",
+        "| System vs HiDrift-full | Metric | p_value | p_value_holm | Significant@0.05 | Effect Size (d) |",
+        "| --- | --- | --- | --- | --- | --- |",
     ]
     for system, metrics in stats.items():
         for metric, row in metrics.items():
             lines.append(
-                f"| {system} | {metric} | {row.get('p_value', 1.0):.6f} | {row.get('effect_size_cohen_d', 0.0):.4f} |"
+                f"| {system} | {metric} | {row.get('p_value', 1.0):.6f} | {row.get('p_value_holm', 1.0):.6f} | "
+                f"{row.get('significant_alpha_0_05', False)} | {row.get('effect_size_cohen_d', 0.0):.4f} |"
             )
     out_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
@@ -75,6 +76,50 @@ def _write_scenario_table(report: dict, out_path: Path) -> None:
                 f"{agg.get('retrieval_precision_at_k', 0.0):.4f} | {agg.get('hallucination_rate', 0.0):.4f} | "
                 f"{agg.get('adaptation_latency', 0.0):.4f} |"
             )
+    out_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+def _write_hypothesis_table(report: dict, out_path: Path) -> None:
+    hypotheses = report.get("hypothesis_results", {})
+    lines = [
+        "| Hypothesis | Statement | Decision Signals |",
+        "| --- | --- | --- |",
+    ]
+    for hid, row in hypotheses.items():
+        signals = ", ".join([f"{k}={v}" for k, v in row.items() if k != "statement"])
+        lines.append(f"| {hid} | {row.get('statement', '')} | {signals} |")
+    out_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+def _write_cost_table(report: dict, out_path: Path) -> None:
+    systems = report.get("systems", {})
+    lines = [
+        "| System | Avg Turn Latency (ms) | Consolidation Events / 100 turns | Memory Bloat |",
+        "| --- | --- | --- | --- |",
+    ]
+    for name, payload in systems.items():
+        agg = payload.get("aggregate_mean", {})
+        lines.append(
+            f"| {name} | {agg.get('avg_turn_latency_ms', 0.0):.3f} | "
+            f"{agg.get('consolidation_events_per_100_turns', 0.0):.3f} | {agg.get('memory_bloat', 0.0):.3f} |"
+        )
+    out_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+def _write_qualitative_error_cases(report: dict, out_path: Path, n_cases: int = 20) -> None:
+    traces = report.get("traces", [])
+    failures = [t for t in traces if (not t.get("success", True)) or t.get("hallucinated", False)]
+    failures = sorted(failures, key=lambda r: (r.get("drift_score", 0.0), r.get("turn", 0)), reverse=True)
+    lines = [
+        "| system | scenario | seed | turn | task | expected_style | success | hallucinated | drift_score |",
+        "| --- | --- | --- | --- | --- | --- | --- | --- | --- |",
+    ]
+    for row in failures[:n_cases]:
+        lines.append(
+            f"| {row.get('system')} | {row.get('scenario')} | {row.get('seed')} | {row.get('turn')} | "
+            f"{row.get('task_label')} | {row.get('expected_style')} | {row.get('success')} | "
+            f"{row.get('hallucinated')} | {row.get('drift_score', 0.0):.4f} |"
+        )
     out_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
@@ -230,8 +275,19 @@ def main() -> None:
     _write_main_table(report, table_dir / "aggregate_metrics.md")
     _write_significance_table(report, table_dir / "significance_report.md")
     _write_scenario_table(report, table_dir / "scenario_metrics.md")
+    _write_hypothesis_table(report, table_dir / "hypothesis_results.md")
+    _write_cost_table(report, table_dir / "cost_latency_table.md")
+    _write_qualitative_error_cases(report, table_dir / "qualitative_failure_cases.md")
     charts = _plot(report, fig_dir)
-    print(f"Exported tables: {table_dir / 'aggregate_metrics.md'}, {table_dir / 'significance_report.md'}, {table_dir / 'scenario_metrics.md'}")
+    print(
+        "Exported tables: "
+        f"{table_dir / 'aggregate_metrics.md'}, "
+        f"{table_dir / 'significance_report.md'}, "
+        f"{table_dir / 'scenario_metrics.md'}, "
+        f"{table_dir / 'hypothesis_results.md'}, "
+        f"{table_dir / 'cost_latency_table.md'}, "
+        f"{table_dir / 'qualitative_failure_cases.md'}"
+    )
     if charts:
         for chart in charts:
             print(f"Exported chart: {chart}")
