@@ -3,10 +3,11 @@ from __future__ import annotations
 import asyncio
 
 from hidrift.agent.runtime import AgentRuntime
+from hidrift.memory.service import MemoryService
 
 
-def test_end_to_end_ingest_retrieve_act_loop() -> None:
-    runtime = AgentRuntime()
+def test_end_to_end_ingest_retrieve_act_loop(tmp_path) -> None:
+    runtime = AgentRuntime(memory_service=MemoryService(graph_persistence_path=str(tmp_path / "semantic_graph.json")))
     result = asyncio.run(
         runtime.handle_turn(
             session_id="s-1",
@@ -22,8 +23,8 @@ def test_end_to_end_ingest_retrieve_act_loop() -> None:
     assert result["retrieval"]["episodic_count"] >= 1
 
 
-def test_drift_trigger_can_invoke_consolidation() -> None:
-    runtime = AgentRuntime()
+def test_drift_trigger_can_invoke_consolidation(tmp_path) -> None:
+    runtime = AgentRuntime(memory_service=MemoryService(graph_persistence_path=str(tmp_path / "semantic_graph.json")))
     # Force low threshold by mutating config object for deterministic integration behavior.
     runtime.drift.config.threshold = 0.0
     for i in range(4):
@@ -38,4 +39,3 @@ def test_drift_trigger_can_invoke_consolidation() -> None:
             )
         )
     assert len(runtime.memory.semantic) >= 1
-

@@ -3,10 +3,12 @@ from __future__ import annotations
 import asyncio
 
 from hidrift.agent.runtime import AgentRuntime
+from hidrift.memory.service import MemoryService
 
 
-def test_consolidation_creates_semantic_facts() -> None:
-    rt = AgentRuntime()
+def test_consolidation_creates_semantic_facts(tmp_path) -> None:
+    memory = MemoryService(graph_persistence_path=str(tmp_path / "semantic_graph.json"))
+    rt = AgentRuntime(memory_service=memory)
     rt.drift.config.threshold = 0.0
     for i in range(4):
         asyncio.run(
@@ -23,8 +25,9 @@ def test_consolidation_creates_semantic_facts() -> None:
     assert len(facts) >= 1
 
 
-def test_superseded_fact_deactivation() -> None:
-    rt = AgentRuntime()
+def test_superseded_fact_deactivation(tmp_path) -> None:
+    memory = MemoryService(graph_persistence_path=str(tmp_path / "semantic_graph.json"))
+    rt = AgentRuntime(memory_service=memory)
     sem = rt.memory.semantic
     from datetime import timedelta
 
@@ -58,4 +61,3 @@ def test_superseded_fact_deactivation() -> None:
     active = [f for f in sem.all_facts() if f.is_active]
     assert len(active) >= 1
     assert any(f.fact_id == "f2" for f in active)
-

@@ -26,10 +26,16 @@ class MemoryService:
         self,
         working_maxlen: int = 20,
         dedup_threshold: float = 0.88,
+        graph_persistence_path: str = "artifacts/semantic_graph.json",
+        fusion_weights: dict[str, float] | None = None,
     ) -> None:
         self.working = WorkingMemory(maxlen=working_maxlen)
         self.episodic = EpisodicMemory()
-        self.semantic = SemanticMemory(dedup_threshold=dedup_threshold)
+        self.semantic = SemanticMemory(
+            dedup_threshold=dedup_threshold,
+            graph_persistence_path=graph_persistence_path,
+            fusion_weights=fusion_weights,
+        )
         self.router = MemoryRouter()
 
     def ingest_interaction(
