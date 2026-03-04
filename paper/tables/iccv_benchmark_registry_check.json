@@ -1,0 +1,25 @@
+{
+  "passed": true,
+  "observed_scenarios": [
+    "contradiction_drift",
+    "locomo_official",
+    "longmem_official",
+    "personal_assistant_drift",
+    "semi_real_trace",
+    "tool_api_drift"
+  ],
+  "track_results": [
+    {
+      "track_id": "iccv_official_required",
+      "required_for_publication": true,
+      "expected_scenarios": [
+        "locomo_official",
+        "longmem_official"
+      ],
+      "missing_scenarios": [],
+      "passed": true
+    }
+  ],
+  "eval_report_path": "D:\\project\\HiDrift-implemntation\\artifacts\\eval_29acc7d7-04ab-4e4f-a050-4a741d55a740.json",
+  "registry_path": "configs/eval/benchmark_registry_iccv.json"
+}

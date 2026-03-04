@@ -187,6 +187,7 @@ make paper_ready
 
 ### ICCV-grade pipeline
 ```powershell
+python scripts/prepare_official_benchmarks.py
 make eval_iccv
 python scripts/export_figures.py
 make iccv_check

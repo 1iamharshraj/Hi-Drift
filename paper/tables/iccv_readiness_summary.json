@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "eval_report": "D:\\project\\HiDrift-implemntation\\artifacts\\eval_29acc7d7-04ab-4e4f-a050-4a741d55a740.json",
+  "results": [
+    {
+      "cmd": "D:\\project\\HiDrift-implemntation\\venv\\Scripts\\python.exe D:\\project\\HiDrift-implemntation\\scripts\\check_benchmark_registry.py --eval-report D:\\project\\HiDrift-implemntation\\artifacts\\eval_29acc7d7-04ab-4e4f-a050-4a741d55a740.json --registry configs/eval/benchmark_registry_iccv.json --output-json paper/tables/iccv_benchmark_registry_check.json --output-md paper/tables/iccv_benchmark_registry_check.md",
+      "exit_code": 0,
+      "output": "{\n  \"status\": \"PASS\",\n  \"eval_report_path\": \"D:\\\\project\\\\HiDrift-implemntation\\\\artifacts\\\\eval_29acc7d7-04ab-4e4f-a050-4a741d55a740.json\",\n  \"output_json\": \"paper\\\\tables\\\\iccv_benchmark_registry_check.json\",\n  \"output_md\": \"paper\\\\tables\\\\iccv_benchmark_registry_check.md\"\n}"
+    },
+    {
+      "cmd": "D:\\project\\HiDrift-implemntation\\venv\\Scripts\\python.exe D:\\project\\HiDrift-implemntation\\scripts\\check_publication_readiness.py --eval-report D:\\project\\HiDrift-implemntation\\artifacts\\eval_29acc7d7-04ab-4e4f-a050-4a741d55a740.json --policy configs/eval/iccv_policy.json --output-json paper/tables/iccv_publication_readiness.json --output-md paper/tables/iccv_publication_readiness.md",
+      "exit_code": 0,
+      "output": "{\n  \"status\": \"PASS\",\n  \"eval_report_path\": \"D:\\\\project\\\\HiDrift-implemntation\\\\artifacts\\\\eval_29acc7d7-04ab-4e4f-a050-4a741d55a740.json\",\n  \"output_json\": \"paper\\\\tables\\\\iccv_publication_readiness.json\",\n  \"output_md\": \"paper\\\\tables\\\\iccv_publication_readiness.md\"\n}"
+    }
+  ]
+}

@@ -27,6 +27,15 @@ Populate official benchmark files:
 1. `data/benchmarks/official/locomo/locomo_official.jsonl`
 2. `data/benchmarks/official/longmem/longmem_official.jsonl`
 
+Raw source files used by converter:
+1. `data/benchmarks/official/locomo/locomo10.json`
+2. `data/benchmarks/official/longmem/longmemeval_oracle.json`
+3. `data/benchmarks/official/longmem/longmemeval_s_cleaned.json`
+4. `data/benchmarks/official/longmem/longmemeval_m_cleaned.json`
+
+Generate JSONL via:
+1. `python scripts/prepare_official_benchmarks.py`
+
 Each line format:
 ```json
 {

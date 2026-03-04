@@ -1,0 +1,64 @@
+{
+  "passed": true,
+  "reference_system": "HiDrift-full",
+  "policy_summary": {
+    "min_seeds": 10,
+    "required_external_scenarios": [
+      "locomo_official",
+      "longmem_official"
+    ],
+    "required_systems": [
+      "FlatMem-TopK",
+      "GenerativeAgents-style",
+      "HiDrift-full",
+      "HierMemory-noDrift",
+      "MemGPT-style",
+      "RAG-only"
+    ],
+    "alpha": 0.05,
+    "use_holm_adjusted_p": true
+  },
+  "gates": [
+    {
+      "gate_id": "G1_min_seeds",
+      "passed": true,
+      "details": "observed=10, required>=10"
+    },
+    {
+      "gate_id": "G2_external_benchmarks",
+      "passed": true,
+      "details": "missing=none"
+    },
+    {
+      "gate_id": "G3_baseline_coverage",
+      "passed": true,
+      "details": "missing=none"
+    },
+    {
+      "gate_id": "G4_success_gain",
+      "passed": true,
+      "details": "gain=0.4375, required>=0.1000"
+    },
+    {
+      "gate_id": "G5_latency_reduction",
+      "passed": true,
+      "details": "reduction=0.4019, required>=0.2500"
+    },
+    {
+      "gate_id": "G6_bloat_reduction",
+      "passed": true,
+      "details": "reduction=0.5081, required>=0.3000"
+    },
+    {
+      "gate_id": "G7_significance",
+      "passed": true,
+      "details": "failures=none"
+    },
+    {
+      "gate_id": "G8_hypothesis_reporting",
+      "passed": true,
+      "details": "observed=3, required>=3"
+    }
+  ],
+  "eval_report_path": "D:\\project\\HiDrift-implemntation\\artifacts\\eval_29acc7d7-04ab-4e4f-a050-4a741d55a740.json"
+}

@@ -159,6 +159,7 @@ Expected outputs:
 13. `paper/figures/constraint_violation_trend.png`
 
 ICCV checks:
+1. `python scripts/prepare_official_benchmarks.py`
 1. `python scripts/check_iccv_readiness.py`
 2. Validate `paper/tables/iccv_readiness_summary.json`
 

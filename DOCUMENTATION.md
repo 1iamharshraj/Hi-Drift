@@ -368,7 +368,8 @@ pip install -e ".[dev,api]"
 5. Extend conflict policies with contradiction/supersession provenance scoring
 
 ## 16. ICCV-Grade Workflow
-1. Prepare official benchmark files described in `ICCV_PLAN.md`
+1. Prepare official benchmark JSONL files:
+   - `python scripts/prepare_official_benchmarks.py`
 2. Run `python scripts/run_eval_matrix.py --config configs/eval/matrix_iccv.json`
 3. Run `python scripts/check_iccv_readiness.py`
 4. Confirm:
