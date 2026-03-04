@@ -1,0 +1,29 @@
+{
+  "reference_system": "HiDrift-full",
+  "primary_baseline": "RAG-only",
+  "latency_baseline_system": "HierMemory-noDrift",
+  "bloat_baseline_system": "RAG-only",
+  "required_systems": [
+    "RAG-only",
+    "HierMemory-noDrift",
+    "MemGPT-style",
+    "GenerativeAgents-style",
+    "FlatMem-TopK",
+    "HiDrift-full"
+  ],
+  "required_external_scenarios": [
+    "locomo_official",
+    "longmem_official"
+  ],
+  "min_seeds": 10,
+  "min_success_gain_vs_primary_baseline": 0.1,
+  "min_latency_reduction_ratio": 0.25,
+  "min_bloat_reduction_ratio": 0.3,
+  "alpha": 0.05,
+  "use_holm_adjusted_p": true,
+  "significance_opponents": [
+    "RAG-only",
+    "HierMemory-noDrift"
+  ],
+  "min_hypotheses": 3
+}

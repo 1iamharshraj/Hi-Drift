@@ -1,0 +1,14 @@
+{
+  "official_scenarios": [
+    {
+      "name": "locomo_official",
+      "path": "data/benchmarks/official/locomo/locomo_official.jsonl",
+      "required": true
+    },
+    {
+      "name": "longmem_official",
+      "path": "data/benchmarks/official/longmem/longmem_official.jsonl",
+      "required": true
+    }
+  ]
+}

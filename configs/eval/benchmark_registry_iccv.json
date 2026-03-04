@@ -1,0 +1,14 @@
+{
+  "version": "1.0",
+  "tracks": [
+    {
+      "track_id": "iccv_official_required",
+      "description": "Official benchmark adapters required for ICCV-grade submission.",
+      "required_for_publication": true,
+      "scenarios": [
+        "locomo_official",
+        "longmem_official"
+      ]
+    }
+  ]
+}

@@ -4,6 +4,7 @@ import json
 from dataclasses import dataclass
 from pathlib import Path
 
+from hidrift.eval.official_benchmarks import load_official_scenarios
 from hidrift.eval.simulator import (
     SimScenario,
     SimTurn,
@@ -75,8 +76,9 @@ def build_scenario_suite(
     manifest_path: str | None = None,
 ) -> list[SimScenario]:
     scenarios: list[SimScenario] = []
-    include_internal = benchmark_profile in {"internal_v1", "publishable_v1", "mixed_v1"}
+    include_internal = benchmark_profile in {"internal_v1", "publishable_v1", "mixed_v1", "iccv_v1"}
     include_external = benchmark_profile in {"external_v1", "publishable_v1", "mixed_v1"}
+    include_official = benchmark_profile in {"iccv_v1"}
 
     if include_internal:
         scenarios.extend(
@@ -94,6 +96,10 @@ def build_scenario_suite(
             if not spec.enabled:
                 continue
             scenarios.append(_load_jsonl_scenario(path=spec.path, name=spec.name))
+
+    if include_official and manifest_path:
+        official_scenarios, _ = load_official_scenarios(manifest_path)
+        scenarios.extend(official_scenarios)
 
     # Filter empty scenarios so eval loops remain stable if external files are missing.
     return [scenario for scenario in scenarios if scenario.turns]

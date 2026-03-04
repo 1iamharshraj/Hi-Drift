@@ -22,7 +22,7 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--benchmark-profile",
         default="publishable_v1",
-        choices=["internal_v1", "external_v1", "mixed_v1", "publishable_v1"],
+        choices=["internal_v1", "external_v1", "mixed_v1", "publishable_v1", "iccv_v1"],
         help="Benchmark suite profile to execute.",
     )
     parser.add_argument(
