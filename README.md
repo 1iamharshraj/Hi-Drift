@@ -1,59 +1,109 @@
 # HiDrift
 
-HiDrift is a research-oriented implementation of a drift-aware hierarchical memory system for long-horizon LLM agents.  
-It combines:
-1. Drift detection
-2. Working + episodic + semantic memory hierarchy
-3. Hybrid semantic memory retrieval (graph + vector)
-4. Consolidation pipelines
-5. Evaluation and visualization workflows
+![Python](https://img.shields.io/badge/Python-3.11%2B-blue.svg)
+![Tests](https://img.shields.io/badge/tests-21%20passed-brightgreen)
+![License](https://img.shields.io/badge/license-MIT-lightgrey)
+![Status](https://img.shields.io/badge/status-research%20prototype-orange)
 
-## Documentation Map
-1. Main reference guide: `DOCUMENTATION.md`
-2. Architecture and data-flow diagrams: `ARCHITECTURE.md`
-3. Testing guide: `TESTING.md`
-4. API contract source: `src/hidrift/api.py`
-5. Config defaults: `configs/`
-6. Scripts for eval/plots/calibration: `scripts/`
+Drift-aware hierarchical memory for long-horizon LLM agents, with hybrid semantic retrieval (graph + vector), consolidation, and reproducible evaluation.
+
+`Tags:` `long-horizon-agents` `drift-detection` `hierarchical-memory` `semantic-graph` `continual-learning` `evaluation`
 
 ## Table Of Contents
-1. Project Goals
-2. Repository Layout
-3. Environment Setup
-4. Gemini Configuration
-5. Running The API
-6. API Endpoint Guide
-7. Testing Guide
-8. Evaluation Guide
-9. Visualization Guide
-10. Known Operational Notes
-11. Troubleshooting
-12. Development Workflow
+1. Overview
+2. System Architecture
+3. Core Features
+4. Repository Structure
+5. Quick Start
+6. Runtime API
+7. Evaluation And Reporting
+8. Reproducibility
+9. Operational Notes
+10. References
 
-## 1) Project Goals
-HiDrift addresses memory degradation over long agent horizons by:
-1. Detecting context/behavior/performance drift
-2. Consolidating episodic experiences into structured semantic facts
-3. Maintaining semantic facts in a graph-augmented memory layer
-4. Retrieving both hard constraints and supporting context
-5. Benchmarking performance over controlled drift scenarios
+## 1. Overview
+HiDrift focuses on memory degradation and adaptation failures in long-running assistants.
 
-## 2) Repository Layout
-High-value paths:
-1. `src/hidrift/agent/` runtime orchestration
-2. `src/hidrift/drift/` drift feature and scoring logic
-3. `src/hidrift/memory/` working/episodic/semantic memory
-4. `src/hidrift/semantic_graph/` graph adapter/store/query/reasoning
-5. `src/hidrift/consolidation/` clustering, summarization, consolidation worker
-6. `src/hidrift/eval/` simulator, baselines, metrics, experiment runner
-7. `src/hidrift/api.py` FastAPI app and all routes
-8. `configs/` default model/memory/drift/eval settings
-9. `tests/` unit/integration/regression coverage
-10. `paper/` generated tables and figures for reporting
+It provides:
+1. Online drift scoring from behavioral, task, and performance signals.
+2. Three-level memory hierarchy: working, episodic, semantic.
+3. Consolidation from episodic traces into structured semantic facts.
+4. Conflict-aware semantic graph updates and hybrid retrieval.
+5. Benchmark matrix execution with statistical reporting and figures.
 
-## 3) Environment Setup
+## 2. System Architecture
+### 2.1 High-Level Runtime
+```mermaid
+graph TD
+    U[User Input] --> API[FastAPI]
+    API --> RT[Agent Runtime]
+    RT --> DS[Drift Service]
+    RT --> MS[Memory Service]
+    MS --> WM[Working Memory]
+    MS --> EM[Episodic Memory]
+    MS --> SM[Semantic Memory]
+    SM --> VS[Vector Store]
+    SM --> G[Semantic Graph]
+    RT --> CW[Consolidation Worker]
+    CW --> EM
+    CW --> SM
+    RT --> LLM[LLM Provider]
+```
 
-### Windows PowerShell (recommended)
+### 2.2 Turn Lifecycle
+```mermaid
+sequenceDiagram
+    participant C as Client
+    participant R as Runtime
+    participant D as Drift
+    participant M as Memory
+    participant W as Consolidation Worker
+
+    C->>R: ingest turn
+    R->>D: update drift state
+    D-->>R: drift signal
+    R->>M: write working + episodic
+    alt drift trigger
+        R->>W: consolidate
+        W->>M: upsert semantic facts
+    end
+    R->>M: hybrid retrieve context
+    R-->>C: response + diagnostics
+```
+
+### 2.3 Evaluation Pipeline
+```mermaid
+flowchart LR
+    A[run_eval_matrix.py] --> B[eval_RUN.json]
+    B --> C[export_figures.py]
+    C --> D[paper tables]
+    C --> E[paper figures]
+```
+
+For full diagrams, see [ARCHITECTURE.md](ARCHITECTURE.md).
+
+## 3. Core Features
+1. Drift-aware triggering with threshold, hysteresis, and cooldown.
+2. Hybrid semantic memory with active/inactive fact lifecycle.
+3. Conflict resolution over `(subject, relation)` groups.
+4. Evidence linking from semantic facts back to episodes.
+5. Official benchmark data preparation and matrix execution tooling.
+
+## 4. Repository Structure
+1. `src/hidrift/agent/`: runtime orchestration.
+2. `src/hidrift/drift/`: drift features and scoring.
+3. `src/hidrift/memory/`: working, episodic, semantic layers.
+4. `src/hidrift/semantic_graph/`: graph backend and reasoning.
+5. `src/hidrift/consolidation/`: clustering and summarization.
+6. `src/hidrift/eval/`: simulator, baselines, runner, stats.
+7. `src/hidrift/api.py`: API entrypoint.
+8. `configs/`: model, memory, drift, evaluation configs.
+9. `scripts/`: eval, figures, calibration, data prep utilities.
+10. `tests/`: unit, integration, regression coverage.
+11. `paper/`: generated tables and figures.
+
+## 5. Quick Start
+### 5.1 Environment Setup
 ```powershell
 python -m venv venv
 .\venv\Scripts\Activate.ps1
@@ -61,195 +111,91 @@ python -m pip install --upgrade pip
 pip install -e ".[dev,api]"
 ```
 
-### Verify install
-```powershell
-python -c "import hidrift; print('hidrift import ok')"
-```
-
-## 4) Gemini Configuration
-Default runtime provider is Gemini (`gemini-2.5-flash`) for API usage.
-
-### Option A: temporary shell env
-```powershell
-$env:GEMINI_API_KEY="your_real_key"
-$env:HIDRIFT_LLM_PROVIDER="gemini"
-$env:HIDRIFT_LLM_MODEL="gemini-2.5-flash"
-```
-
-### Option B: `.env` file in repo root
+### 5.2 Gemini Setup
 ```env
 GEMINI_API_KEY=your_real_key
 HIDRIFT_LLM_PROVIDER=gemini
 HIDRIFT_LLM_MODEL=gemini-2.5-flash
 ```
 
-The code auto-loads `.env` through `src/hidrift/env.py` + `src/hidrift/llm/factory.py`.
-
-### Validate key + model connectivity
+Connectivity check:
 ```powershell
 python scripts/check_gemini.py
 ```
 
-If you hit quota/rate limits, tests/eval still run because eval baselines are configured to use fallback LLM mode.
-
-## 5) Running The API
+### 5.3 Run API
 ```powershell
 uvicorn hidrift.api:create_app --factory --reload
 ```
 
-Local URLs:
-1. Swagger UI: `http://127.0.0.1:8000/docs`
-2. OpenAPI JSON: `http://127.0.0.1:8000/openapi.json`
+Endpoints:
+1. Swagger: `http://127.0.0.1:8000/docs`
+2. OpenAPI: `http://127.0.0.1:8000/openapi.json`
 
-## 6) API Endpoint Guide
-
-### Memory + Drift Core
+## 6. Runtime API
+### 6.1 Core Endpoints
 1. `POST /v1/memory/ingest`
 2. `POST /v1/memory/retrieve`
 3. `GET /v1/drift/current`
 4. `POST /v1/consolidation/run`
 5. `GET /v1/eval/run/{run_id}`
 
-### Semantic Graph Endpoints
-1. `GET /v1/semantic/facts?query=...&k=...`
-2. `GET /v1/semantic/graph/subgraph?entity_id=...&hops=...`
+### 6.2 Semantic Endpoints
+1. `GET /v1/semantic/facts`
+2. `GET /v1/semantic/graph/subgraph`
 3. `POST /v1/semantic/facts/upsert`
-4. `GET /v1/semantic/conflicts?entity_id=...`
+4. `GET /v1/semantic/conflicts`
 
-### Ingest example (agent output auto-generated if omitted)
-```json
-{
-  "session_id": "s-001",
-  "user_id": "u-001",
-  "user_input": "Plan my day in concise format",
-  "task_label": "calendar"
-}
-```
-
-### Retrieve example
-```json
-{
-  "query": "what are user style preferences",
-  "k_working": 5,
-  "k_episodic": 5,
-  "k_semantic": 5
-}
-```
-
-Expected retrieve output includes:
-1. `working`
-2. `episodic`
-3. `semantic`
-4. `hard_constraints`
-5. `supporting_context`
-
-## 7) Testing Guide
-
-### Fast feedback
-```powershell
-pytest -q
-```
-
-### Detailed + timing view
-```powershell
-pytest -v --durations=10
-```
-
-### Test suite layout
-1. `tests/unit/` logic-level behavior
-2. `tests/integration/` runtime/API/memory interaction behavior
-3. `tests/regression/` fixed-seed eval behavior checks
-
-## 8) Evaluation Guide
-
-### Run single eval
-```powershell
-python scripts/run_eval.py
-```
-
-### Run benchmark matrix (main comparison + ablations)
+## 7. Evaluation And Reporting
+### 7.1 Main Benchmark Matrix
 ```powershell
 python scripts/run_eval_matrix.py --config configs/eval/matrix_main.json
+python scripts/export_figures.py
 ```
 
-### Run official benchmark prep + matrix
+### 7.2 Official Benchmark Flow
 ```powershell
 python scripts/prepare_official_benchmarks.py
 make eval_official
 python scripts/export_figures.py
 ```
 
-Output:
-1. `artifacts/eval_<uuid>.json`
-2. `artifacts/eval_matrix_<uuid>.json` (for matrix runs)
-2. Includes:
-   - baseline + ablation systems (`RAG-only`, `MemGPT-style`, `GenerativeAgents-style`, `FlatMem-TopK`, `VectorOnly-noGraph`, `GraphOnly-noVector`, `HiDrift-noConflict`, `HiDrift-noDriftSignal`, `HiDrift-full`)
-   - multi-scenario reports (`personal_assistant_drift`, `tool_api_drift`, `contradiction_drift`, `semi_real_trace`, `locomo_like_trace`, `longmem_like_trace`)
-   - per-turn trace logs
-   - significance summary vs `HiDrift-full` with Holm-Bonferroni correction
-
-### Drift threshold calibration artifact
+### 7.3 Testing
 ```powershell
-python scripts/train_calibrator.py
+pytest -q
+pytest -v --durations=10
 ```
 
-Output:
-1. `artifacts/calibration.json`
-
-## 9) Visualization Guide
-Generate tables + PNG charts from latest eval artifact:
-
-```powershell
-python scripts/export_figures.py
-```
-
-Generated artifacts:
-1. `paper/tables/aggregate_metrics.md`
-2. `paper/tables/aggregate_metrics.json`
-3. `paper/tables/significance_report.md`
-4. `paper/tables/scenario_metrics.md`
+### 7.4 Primary Outputs
+1. `artifacts/eval_<run_id>.json`
+2. `artifacts/eval_matrix_<matrix_id>.json`
+3. `paper/tables/aggregate_metrics.md`
+4. `paper/tables/significance_report.md`
 5. `paper/figures/task_success_with_errorbars.png`
-6. `paper/figures/adaptation_latency_distribution.png`
-7. `paper/figures/scenario_success_heatmap.png`
-8. `paper/figures/drift_score_trace.png`
-9. `paper/figures/memory_growth_trace.png`
-10. `paper/figures/constraint_violation_trend.png`
+6. `paper/figures/scenario_success_heatmap.png`
 
-## 10) Known Operational Notes
-1. API runtime defaults to Gemini and requires `GEMINI_API_KEY`
-2. Evaluation baselines intentionally use fallback model to keep tests/eval reproducible under Gemini quota limits
-3. Semantic graph persistence is file-based (`artifacts/semantic_graph.json`)
-4. Current graph backend is `networkx` (single-process baseline)
+## 8. Reproducibility
+Recommended execution order:
+1. `pytest -q`
+2. `python scripts/prepare_official_benchmarks.py`
+3. `python scripts/run_eval_matrix.py --config configs/eval/matrix_main.json`
+4. `python scripts/export_figures.py`
+5. Archive `artifacts/` + `paper/tables` + `paper/figures`.
 
-## 11) Troubleshooting
+Detailed technical docs:
+1. [DOCUMENTATION.md](DOCUMENTATION.md)
+2. [TESTING.md](TESTING.md)
+3. [PRESENTATION_BRIEF.md](PRESENTATION_BRIEF.md)
 
-### `GEMINI_API_KEY is not set`
-1. Ensure `.env` exists in repository root
-2. Ensure key is exactly `GEMINI_API_KEY=...` (no spaces around `=`)
-3. Re-run:
-```powershell
-python scripts/check_gemini.py
-```
+## 9. Operational Notes
+1. API runtime defaults to Gemini.
+2. Evaluation defaults to fallback model for deterministic local runs.
+3. Semantic graph persistence is local file-based (`artifacts/semantic_graph.json`).
+4. Current graph backend is `networkx` (single-process).
 
-### 429 quota/rate-limit from Gemini
-1. Wait for quota reset or use billed project
-2. Keep running tests/eval in fallback mode
-
-### `uv` not found
-Use standard venv + pip flow shown above.
-
-### Import errors after dependency changes
-```powershell
-pip install -e ".[dev,api]"
-```
-
-## 12) Development Workflow
-Suggested loop:
-1. Edit feature/config/tests
-2. Run `pytest -q`
-3. Run `python scripts/run_eval_matrix.py --config configs/eval/matrix_main.json`
-4. Run `python scripts/export_figures.py`
-5. Review `paper/tables/significance_report.md` for p-values/effect sizes
-6. Review `paper/tables/hypothesis_results.md` and `paper/tables/cost_latency_table.md`
-7. Review `paper/figures/scenario_success_heatmap.png` and trace plots for discriminative behavior
-8. Update docs when behavior or contracts change
+## 10. References
+1. Park et al., Generative Agents, UIST 2023. https://arxiv.org/abs/2304.03442
+2. Wang et al., Voyager, arXiv 2023. https://arxiv.org/abs/2305.16291
+3. Packer et al., MemGPT, arXiv 2023. https://arxiv.org/abs/2310.08560
+4. Zhang et al., LoCoMo, ACL 2024. https://aclanthology.org/2024.acl-long.747/
+5. LongMemEval benchmark repository. https://github.com/xiaowu0162/LongMemEval
