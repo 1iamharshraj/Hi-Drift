@@ -111,22 +111,21 @@ Run evaluation:
 python scripts/run_eval.py
 ```
 
-Run publishable matrix:
+Run benchmark matrix:
 ```powershell
-python scripts/run_eval_matrix.py --config configs/eval/matrix_publishable.json
+python scripts/run_eval_matrix.py --config configs/eval/matrix_main.json
 ```
 
-Run publication gates:
+Run official benchmark matrix:
 ```powershell
-python scripts/check_benchmark_registry.py
-python scripts/check_publication_readiness.py
+python scripts/prepare_official_benchmarks.py
+make eval_official
 ```
 
 Expected:
 1. New `artifacts/eval_*.json` file created
 2. Matrix run also creates `artifacts/eval_matrix_*.json`
 3. JSON contains `systems`, `scenario_reports`, `traces`, `benchmark_protocol`, and `significance_vs_hidrift_full`
-4. Publication gate files are created in `paper/tables`
 
 Run calibration:
 
@@ -158,19 +157,12 @@ Expected outputs:
 12. `paper/figures/memory_growth_trace.png`
 13. `paper/figures/constraint_violation_trend.png`
 
-ICCV checks:
-1. `python scripts/prepare_official_benchmarks.py`
-1. `python scripts/check_iccv_readiness.py`
-2. Validate `paper/tables/iccv_readiness_summary.json`
-
 ## 8. Suggested CI Command Order
 
 ```powershell
 pytest -q
-python scripts/run_eval_matrix.py --config configs/eval/matrix_publishable.json
+python scripts/run_eval_matrix.py --config configs/eval/matrix_main.json
 python scripts/export_figures.py
-python scripts/check_benchmark_registry.py
-python scripts/check_publication_readiness.py
 ```
 
 ## 9. Failure Diagnosis Guide

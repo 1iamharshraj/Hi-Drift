@@ -1,7 +1,7 @@
-# Publishable Upgrade Tracker
+# Implementation Tracker
 
 ## Goal
-Upgrade HiDrift from prototype evaluation to publishable-grade evidence pipeline.
+Track HiDrift feature and evaluation maturity from prototype to reproducible research system.
 
 ## Milestones
 - [x] M1: Define tracked execution plan in repo
@@ -10,9 +10,9 @@ Upgrade HiDrift from prototype evaluation to publishable-grade evidence pipeline
 - [x] M4: Statistical reporting (CI, paired significance, effect size)
 - [x] M5: Per-turn trace logging and discriminative visualizations
 - [x] M6: Tests updated for new report schema and robustness
-- [x] M7: Docs fully aligned with publishable workflow
-- [x] M8: Automated publication readiness gates
-- [x] M9: Publication gates passing on current matrix report
+- [x] M7: Docs fully aligned with benchmark workflow
+- [x] M8: Automated readiness gates
+- [x] M9: Quality gates passing on current matrix report
 
 ## Task Board
 
@@ -33,7 +33,7 @@ Upgrade HiDrift from prototype evaluation to publishable-grade evidence pipeline
 - [x] Paired permutation significance test
 - [x] Effect size estimates
 - [x] Save significance report artifact
-- [x] Add publication pass/fail gate checks
+- [x] Add automated pass/fail gate checks
 
 ### Visualization
 - [x] Scenario-wise comparison plots
@@ -42,9 +42,9 @@ Upgrade HiDrift from prototype evaluation to publishable-grade evidence pipeline
 - [x] Constraint violation trend plot
 
 ### Documentation
-- [x] Update README quick path for publishable runs
+- [x] Update README quick path for benchmark runs
 - [x] Update DOCUMENTATION with methods + stats protocol
 - [x] Update TESTING with benchmark/stat validation
 - [x] Update ARCHITECTURE with benchmark/report flow
-- [x] Add explicit publication gate outputs and commands
-- [x] Record latest PASS status artifacts for publication checks
+- [x] Add explicit quality gate outputs and commands
+- [x] Record latest PASS status artifacts for quality checks

@@ -151,7 +151,8 @@ Files:
 1. `configs/eval/default.yaml`
 2. `configs/eval/seeds.yaml`
 3. `configs/eval/benchmark_manifest.json`
-4. `configs/eval/matrix_publishable.json`
+4. `configs/eval/matrix_main.json`
+5. `configs/eval/official_benchmark_manifest.json`
 
 ## 7. API Contract
 Implemented in `src/hidrift/api.py`.
@@ -224,21 +225,28 @@ python scripts/run_eval.py
 ```
 
 Key options:
-1. `--benchmark-profile` (`internal_v1`, `external_v1`, `mixed_v1`, `publishable_v1`)
+1. `--benchmark-profile` (internal, external, mixed, official profiles)
 2. `--benchmark-manifest` (JSON file for external traces)
 3. `--systems` and `--seeds` for targeted sweeps
 
-### 10.2 Run publishable matrix
+### 10.2 Run benchmark matrix
 Command:
 ```powershell
-python scripts/run_eval_matrix.py --config configs/eval/matrix_publishable.json
+python scripts/run_eval_matrix.py --config configs/eval/matrix_main.json
 ```
 
 Generates:
 1. Multiple `artifacts/eval_<uuid>.json` reports (one per run block)
 2. `artifacts/eval_matrix_<uuid>.json` index of matrix run IDs and metadata
 
-### 10.3 Eval report contents
+### 10.3 Run official benchmark matrix
+Command:
+```powershell
+python scripts/prepare_official_benchmarks.py
+make eval_official
+```
+
+### 10.4 Eval report contents
 Each report stores:
 1. `artifacts/eval_<uuid>.json`
 2. `systems` (baseline/ablation matrix)
@@ -247,7 +255,7 @@ Each report stores:
 5. `significance_vs_hidrift_full` (paired permutation p-values + effect sizes + Holm-adjusted p-values)
 6. `benchmark_protocol` (seeds, profile, scenario list, reference system)
 
-### 10.4 Calibrate drift threshold
+### 10.5 Calibrate drift threshold
 Command:
 ```powershell
 python scripts/train_calibrator.py
@@ -255,34 +263,6 @@ python scripts/train_calibrator.py
 
 Generates:
 1. `artifacts/calibration.json`
-
-### 10.5 Benchmark registry validation
-Command:
-```powershell
-python scripts/check_benchmark_registry.py
-```
-
-Outputs:
-1. `paper/tables/benchmark_registry_check.json`
-2. `paper/tables/benchmark_registry_check.md`
-
-### 10.6 Publication readiness gates
-Command:
-```powershell
-python scripts/check_publication_readiness.py
-```
-
-Gate outputs:
-1. `paper/tables/publication_readiness.json`
-2. `paper/tables/publication_readiness.md`
-
-Current gate families:
-1. minimum seeds
-2. required external scenario coverage
-3. baseline coverage
-4. practical gain thresholds
-5. significance thresholds (Holm-adjusted)
-6. hypothesis-report completeness
 
 ## 11. Visualization Pipeline
 Command:
@@ -366,13 +346,3 @@ pip install -e ".[dev,api]"
 3. Add MLflow experiment tracking and Hydra config composition
 4. Add richer timeline-level plotting from raw turn traces
 5. Extend conflict policies with contradiction/supersession provenance scoring
-
-## 16. ICCV-Grade Workflow
-1. Prepare official benchmark JSONL files:
-   - `python scripts/prepare_official_benchmarks.py`
-2. Run `python scripts/run_eval_matrix.py --config configs/eval/matrix_iccv.json`
-3. Run `python scripts/check_iccv_readiness.py`
-4. Confirm:
-   - `paper/tables/iccv_benchmark_registry_check.md`
-   - `paper/tables/iccv_publication_readiness.md`
-   - `paper/tables/iccv_readiness_summary.json`
