@@ -5,12 +5,13 @@
       "name": "main_comparison",
       "systems": [
         "RAG-only",
+        "HierMemory-noDrift",
         "MemGPT-style",
         "GenerativeAgents-style",
         "FlatMem-TopK",
         "HiDrift-full"
       ],
-      "seeds": [11, 22, 33, 44, 55],
+      "seeds": [11, 22, 33, 44, 55, 66, 77, 88, 99, 111],
       "n_turns": 120,
       "benchmark_profile": "publishable_v1",
       "benchmark_manifest": "configs/eval/benchmark_manifest.json"
@@ -25,7 +26,7 @@
         "HiDrift-noDriftSignal",
         "HierMemory-noDrift"
       ],
-      "seeds": [11, 22, 33, 44, 55],
+      "seeds": [11, 22, 33, 44, 55, 66, 77, 88, 99, 111],
       "n_turns": 120,
       "benchmark_profile": "publishable_v1",
       "benchmark_manifest": "configs/eval/benchmark_manifest.json"

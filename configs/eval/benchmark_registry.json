@@ -1,0 +1,37 @@
+{
+  "version": "1.0",
+  "tracks": [
+    {
+      "track_id": "internal_controlled",
+      "description": "Controlled synthetic/semi-real drift suite for fast iteration.",
+      "required_for_publication": false,
+      "scenarios": [
+        "personal_assistant_drift",
+        "tool_api_drift",
+        "contradiction_drift",
+        "semi_real_trace"
+      ]
+    },
+    {
+      "track_id": "external_proxy_v1",
+      "description": "Offline external-style traces packaged locally.",
+      "required_for_publication": true,
+      "scenarios": [
+        "locomo_like_trace",
+        "longmem_like_trace"
+      ]
+    }
+  ],
+  "real_benchmark_targets": [
+    {
+      "name": "locomo",
+      "status": "pending_adapter",
+      "notes": "Add official loader and split adapter."
+    },
+    {
+      "name": "longmem_eval",
+      "status": "pending_adapter",
+      "notes": "Add public benchmark parser and metric harmonization."
+    }
+  ]
+}
