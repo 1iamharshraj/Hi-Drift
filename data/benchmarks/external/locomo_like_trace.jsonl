@@ -1,0 +1,6 @@
+{"user_input":"For project Orion, use concise status updates in IST timezone.","expected_style":"concise","task_label":"project","oracle_fact":"user_pref_style:concise;task:project;tz:IST","drift":false}
+{"user_input":"Schedule sprint review for Friday and keep response concise.","expected_style":"concise","task_label":"calendar","oracle_fact":"user_pref_style:concise;task:calendar","drift":false}
+{"user_input":"Reminder: include blockers in bullet format for project Orion.","expected_style":"bullet","task_label":"project","oracle_fact":"user_pref_style:bullet;task:project;include:blockers","drift":true}
+{"user_input":"For upcoming travel, provide detailed itinerary with dates and costs.","expected_style":"detailed","task_label":"travel","oracle_fact":"user_pref_style:detailed;task:travel;fields:dates,costs","drift":true}
+{"user_input":"Switch back: calendar summaries should be concise with timezone only.","expected_style":"concise","task_label":"calendar","oracle_fact":"user_pref_style:concise;task:calendar;fields:timezone","drift":true}
+{"user_input":"Project handoff notes now need bullet structure plus owner names.","expected_style":"bullet","task_label":"project","oracle_fact":"user_pref_style:bullet;task:project;fields:owners","drift":false}

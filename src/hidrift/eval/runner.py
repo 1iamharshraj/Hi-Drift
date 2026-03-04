@@ -8,9 +8,10 @@ from collections import defaultdict
 from dataclasses import asdict
 from pathlib import Path
 
-from hidrift.eval.baselines import BaselineConfig, build_baseline
+from hidrift.eval.baselines import BaselineConfig, build_baseline, default_systems
+from hidrift.eval.benchmarks import build_scenario_suite
 from hidrift.eval.metrics import EvalMetrics, compute_metrics
-from hidrift.eval.simulator import SimScenario, build_benchmark_suite
+from hidrift.eval.simulator import SimScenario
 from hidrift.eval.stats import cohen_d, holm_bonferroni_adjust, paired_permutation_pvalue, summarize_metric
 
 
@@ -187,16 +188,10 @@ def run_experiment(
     seeds: list[int] | None = None,
     n_turns: int = 120,
     output_dir: str = "artifacts",
+    benchmark_profile: str = "publishable_v1",
+    benchmark_manifest: str | None = "configs/eval/benchmark_manifest.json",
 ) -> dict:
-    systems = systems or [
-        "RAG-only",
-        "HierMemory-noDrift",
-        "VectorOnly-noGraph",
-        "GraphOnly-noVector",
-        "HiDrift-noConflict",
-        "HiDrift-noDriftSignal",
-        "HiDrift-full",
-    ]
+    systems = systems or default_systems()
     seeds = seeds or [11, 22, 33, 44, 55, 66, 77, 88, 99, 111]
     out = Path(output_dir)
     out.mkdir(parents=True, exist_ok=True)
@@ -209,7 +204,9 @@ def run_experiment(
         "benchmark_protocol": {
             "seeds": seeds,
             "n_turns": n_turns,
-            "scenarios": ["personal_assistant_drift", "tool_api_drift", "contradiction_drift", "semi_real_trace"],
+            "benchmark_profile": benchmark_profile,
+            "benchmark_manifest": benchmark_manifest,
+            "scenarios": [],
             "reference_system": "HiDrift-full",
         },
     }
@@ -220,7 +217,14 @@ def run_experiment(
         per_seed_overall = []
         per_seed_by_scenario: dict[str, list[dict]] = defaultdict(list)
         for seed in seeds:
-            scenarios = build_benchmark_suite(seed=seed, n_turns=n_turns)
+            scenarios = build_scenario_suite(
+                seed=seed,
+                n_turns=n_turns,
+                benchmark_profile=benchmark_profile,
+                manifest_path=benchmark_manifest,
+            )
+            if not report["benchmark_protocol"]["scenarios"]:
+                report["benchmark_protocol"]["scenarios"] = [scenario.name for scenario in scenarios]
             scenario_metric_rows = []
             for scenario in scenarios:
                 if not scenario.turns:

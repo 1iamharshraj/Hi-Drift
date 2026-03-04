@@ -18,6 +18,21 @@ class BaselineConfig:
     use_conflict_resolution: bool = True
 
 
+def default_systems() -> list[str]:
+    return [
+        "RAG-only",
+        "HierMemory-noDrift",
+        "VectorOnly-noGraph",
+        "GraphOnly-noVector",
+        "MemGPT-style",
+        "GenerativeAgents-style",
+        "FlatMem-TopK",
+        "HiDrift-noConflict",
+        "HiDrift-noDriftSignal",
+        "HiDrift-full",
+    ]
+
+
 def build_baseline(name: str) -> tuple[AgentRuntime, BaselineConfig]:
     base_cfg = RuntimeConfig(llm_provider="fallback", llm_model="fallback-template", require_llm=False)
     graph_path = f"artifacts/eval_semantic_graph_{uuid.uuid4()}.json"
@@ -118,5 +133,47 @@ def build_baseline(name: str) -> tuple[AgentRuntime, BaselineConfig]:
             use_graph_semantic=True,
             use_vector_semantic=True,
             use_conflict_resolution=True,
+        )
+    if name == "MemGPT-style":
+        runtime = AgentRuntime(
+            memory_service=MemoryService(graph_persistence_path=graph_path),
+            drift_service=DriftService(TriggerConfig(threshold=9999.0)),
+            config=base_cfg,
+        )
+        return runtime, BaselineConfig(
+            name=name,
+            drift_enabled=False,
+            fixed_consolidation_interval=12,
+            use_graph_semantic=False,
+            use_vector_semantic=True,
+            use_conflict_resolution=False,
+        )
+    if name == "GenerativeAgents-style":
+        runtime = AgentRuntime(
+            memory_service=MemoryService(graph_persistence_path=graph_path),
+            drift_service=DriftService(TriggerConfig(threshold=9999.0)),
+            config=base_cfg,
+        )
+        return runtime, BaselineConfig(
+            name=name,
+            drift_enabled=False,
+            fixed_consolidation_interval=10,
+            use_graph_semantic=True,
+            use_vector_semantic=True,
+            use_conflict_resolution=False,
+        )
+    if name == "FlatMem-TopK":
+        runtime = AgentRuntime(
+            memory_service=MemoryService(graph_persistence_path=graph_path),
+            drift_service=DriftService(TriggerConfig(threshold=9999.0)),
+            config=base_cfg,
+        )
+        return runtime, BaselineConfig(
+            name=name,
+            drift_enabled=False,
+            fixed_consolidation_interval=None,
+            use_graph_semantic=False,
+            use_vector_semantic=True,
+            use_conflict_resolution=False,
         )
     raise ValueError(f"Unknown baseline: {name}")

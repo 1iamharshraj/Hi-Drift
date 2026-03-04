@@ -1,0 +1,14 @@
+{
+  "external_scenarios": [
+    {
+      "name": "locomo_like_trace",
+      "path": "data/benchmarks/external/locomo_like_trace.jsonl",
+      "enabled": true
+    },
+    {
+      "name": "longmem_like_trace",
+      "path": "data/benchmarks/external/longmem_like_trace.jsonl",
+      "enabled": true
+    }
+  ]
+}

@@ -1,7 +1,10 @@
 systems:
   - RAG-only
-  - HierMemory-noDrift
+  - MemGPT-style
+  - GenerativeAgents-style
+  - FlatMem-TopK
   - HiDrift-full
 n_turns: 120
 output_dir: artifacts
-
+benchmark_profile: publishable_v1
+benchmark_manifest: configs/eval/benchmark_manifest.json

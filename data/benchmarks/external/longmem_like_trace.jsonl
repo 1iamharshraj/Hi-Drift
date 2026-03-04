@@ -1,0 +1,6 @@
+{"user_input":"Use API schema v1 for reminder create endpoint and respond concise.","expected_style":"concise","task_label":"tooling","oracle_fact":"api_schema:reminder_v1;style:concise","drift":false}
+{"user_input":"Task planner mode: concise checklist for milestones.","expected_style":"concise","task_label":"project","oracle_fact":"user_pref_style:concise;task:project","drift":false}
+{"user_input":"API migration completed, now use schema v2 with mandatory priority field.","expected_style":"detailed","task_label":"tooling","oracle_fact":"api_schema:reminder_v2;required:priority","drift":true}
+{"user_input":"For tooling errors, give detailed root-cause and fix steps.","expected_style":"detailed","task_label":"tooling","oracle_fact":"user_pref_style:detailed;task:tooling;fields:root_cause,fix","drift":false}
+{"user_input":"Preference update: travel summaries must be bullet with exact times.","expected_style":"bullet","task_label":"travel","oracle_fact":"user_pref_style:bullet;task:travel;fields:times","drift":true}
+{"user_input":"Contradiction resolved: project updates are concise again.","expected_style":"concise","task_label":"project","oracle_fact":"user_pref_style:concise;task:project","drift":true}
