@@ -1,0 +1,7 @@
+{"turn_id": 1, "user_input": "Need my standup summary in concise style", "task_label": "project", "expected_style": "concise", "oracle_fact": "user_pref_style:concise;task:project", "drift": false}
+{"turn_id": 2, "user_input": "Also remind me about API token expiry", "task_label": "tooling", "expected_style": "concise", "oracle_fact": "tool_policy:token_expiry_check", "drift": false}
+{"turn_id": 3, "user_input": "From now on give detailed action plans", "task_label": "project", "expected_style": "detailed", "oracle_fact": "user_pref_style:detailed;task:project", "drift": true}
+{"turn_id": 4, "user_input": "Our calendar endpoint changed to v2 schema", "task_label": "calendar", "expected_style": "detailed", "oracle_fact": "api_schema:calendar_v2", "drift": true}
+{"turn_id": 5, "user_input": "Give bullet style for travel updates only", "task_label": "travel", "expected_style": "bullet", "oracle_fact": "user_pref_style:bullet;task:travel", "drift": true}
+{"turn_id": 6, "user_input": "Project updates should stay detailed", "task_label": "project", "expected_style": "detailed", "oracle_fact": "user_pref_style:detailed;task:project", "drift": false}
+
