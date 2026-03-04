@@ -186,6 +186,7 @@ Detailed technical docs:
 1. [DOCUMENTATION.md](DOCUMENTATION.md)
 2. [TESTING.md](TESTING.md)
 3. [PRESENTATION_BRIEF.md](PRESENTATION_BRIEF.md)
+4. [RESULTS_INTERPRETATION.md](paper/RESULTS_INTERPRETATION.md)
 
 ## 9. Operational Notes
 1. API runtime defaults to Gemini.
