@@ -2,178 +2,785 @@
   "RAG-only": {
     "per_seed": [
       {
-        "task_success_rate": 0.9833333333333333,
-        "retrieval_precision_at_k": 0.8333333333333334,
-        "retrieval_recall_at_k": 0.8333333333333334,
+        "task_success_rate": 0.5645833333333333,
+        "retrieval_precision_at_k": 0.8979166666666667,
+        "retrieval_recall_at_k": 0.8979166666666667,
         "hallucination_rate": 0.0,
-        "memory_bloat": 120.0,
-        "adaptation_latency": 0.0,
-        "stability_score": 0.9836111111111111
+        "memory_bloat": 91.5,
+        "adaptation_latency": 2.25,
+        "stability_score": 0.8840451388888889
       },
       {
-        "task_success_rate": 0.9583333333333334,
-        "retrieval_precision_at_k": 0.8333333333333334,
-        "retrieval_recall_at_k": 0.8333333333333334,
+        "task_success_rate": 0.5791666666666666,
+        "retrieval_precision_at_k": 0.9125,
+        "retrieval_recall_at_k": 0.9125,
         "hallucination_rate": 0.0,
-        "memory_bloat": 120.0,
-        "adaptation_latency": 0.4936708860759494,
-        "stability_score": 0.9600694444444444
+        "memory_bloat": 91.5,
+        "adaptation_latency": 0.5,
+        "stability_score": 0.8875694444444444
       },
       {
-        "task_success_rate": 0.925,
-        "retrieval_precision_at_k": 0.9083333333333333,
-        "retrieval_recall_at_k": 0.9083333333333333,
+        "task_success_rate": 0.5625,
+        "retrieval_precision_at_k": 0.8958333333333334,
+        "retrieval_recall_at_k": 0.8958333333333334,
         "hallucination_rate": 0.0,
-        "memory_bloat": 120.0,
-        "adaptation_latency": 0.0,
-        "stability_score": 0.930625
+        "memory_bloat": 91.5,
+        "adaptation_latency": 2.5,
+        "stability_score": 0.8836805555555556
       },
       {
-        "task_success_rate": 0.9583333333333334,
-        "retrieval_precision_at_k": 0.8333333333333334,
-        "retrieval_recall_at_k": 0.8333333333333334,
+        "task_success_rate": 0.5770833333333334,
+        "retrieval_precision_at_k": 0.9104166666666667,
+        "retrieval_recall_at_k": 0.9104166666666667,
         "hallucination_rate": 0.0,
-        "memory_bloat": 120.0,
-        "adaptation_latency": 0.0,
-        "stability_score": 0.9600694444444444
+        "memory_bloat": 91.5,
+        "adaptation_latency": 0.75,
+        "stability_score": 0.8869618055555556
       },
       {
-        "task_success_rate": 0.95,
-        "retrieval_precision_at_k": 0.9,
-        "retrieval_recall_at_k": 0.9,
+        "task_success_rate": 0.5770833333333334,
+        "retrieval_precision_at_k": 0.9104166666666667,
+        "retrieval_recall_at_k": 0.9104166666666667,
         "hallucination_rate": 0.0,
-        "memory_bloat": 120.0,
-        "adaptation_latency": 0.0,
-        "stability_score": 0.9525
+        "memory_bloat": 91.5,
+        "adaptation_latency": 0.75,
+        "stability_score": 0.8869618055555556
+      },
+      {
+        "task_success_rate": 0.625,
+        "retrieval_precision_at_k": 0.9583333333333334,
+        "retrieval_recall_at_k": 0.9583333333333334,
+        "hallucination_rate": 0.0,
+        "memory_bloat": 91.5,
+        "adaptation_latency": 2.091666666666667,
+        "stability_score": 0.9097222222222222
+      },
+      {
+        "task_success_rate": 0.6541666666666667,
+        "retrieval_precision_at_k": 0.9875,
+        "retrieval_recall_at_k": 0.9875,
+        "hallucination_rate": 0.0,
+        "memory_bloat": 91.5,
+        "adaptation_latency": 0.75,
+        "stability_score": 0.9325694444444445
+      },
+      {
+        "task_success_rate": 0.6541666666666667,
+        "retrieval_precision_at_k": 0.9875,
+        "retrieval_recall_at_k": 0.9875,
+        "hallucination_rate": 0.0,
+        "memory_bloat": 91.5,
+        "adaptation_latency": 0.75,
+        "stability_score": 0.9325694444444445
+      },
+      {
+        "task_success_rate": 0.6229166666666667,
+        "retrieval_precision_at_k": 0.95625,
+        "retrieval_recall_at_k": 0.95625,
+        "hallucination_rate": 0.0,
+        "memory_bloat": 91.5,
+        "adaptation_latency": 2.1483050847457625,
+        "stability_score": 0.9083506944444444
+      },
+      {
+        "task_success_rate": 0.5645833333333333,
+        "retrieval_precision_at_k": 0.8979166666666667,
+        "retrieval_recall_at_k": 0.8979166666666667,
+        "hallucination_rate": 0.0,
+        "memory_bloat": 91.5,
+        "adaptation_latency": 2.25,
+        "stability_score": 0.8840451388888889
       }
     ],
     "aggregate_mean": {
-      "task_success_rate": 0.9550000000000001,
-      "retrieval_precision_at_k": 0.8616666666666667,
-      "retrieval_recall_at_k": 0.8616666666666667,
+      "task_success_rate": 0.598125,
+      "retrieval_precision_at_k": 0.9314583333333333,
+      "retrieval_recall_at_k": 0.9314583333333333,
       "hallucination_rate": 0.0,
-      "memory_bloat": 120.0,
-      "adaptation_latency": 0.09873417721518987,
-      "stability_score": 0.9573750000000001
+      "memory_bloat": 91.5,
+      "adaptation_latency": 1.473997175141243,
+      "stability_score": 0.8996475694444446
     },
-    "n_seeds": 5
+    "n_seeds": 10,
+    "ablation_config": {
+      "name": "RAG-only",
+      "drift_enabled": false,
+      "fixed_consolidation_interval": null,
+      "use_graph_semantic": false,
+      "use_vector_semantic": false,
+      "use_conflict_resolution": false
+    }
   },
   "HierMemory-noDrift": {
     "per_seed": [
       {
-        "task_success_rate": 0.9833333333333333,
-        "retrieval_precision_at_k": 0.9416666666666667,
-        "retrieval_recall_at_k": 0.9416666666666667,
-        "hallucination_rate": 0.0,
-        "memory_bloat": 130.0,
-        "adaptation_latency": 0.0,
-        "stability_score": 0.9836111111111111
+        "task_success_rate": 0.6395833333333334,
+        "retrieval_precision_at_k": 0.9729166666666667,
+        "retrieval_recall_at_k": 0.9729166666666667,
+        "hallucination_rate": 0.34791666666666665,
+        "memory_bloat": 101.0,
+        "adaptation_latency": 1.578358208955224,
+        "stability_score": 0.9202951388888889
       },
       {
-        "task_success_rate": 0.9583333333333334,
-        "retrieval_precision_at_k": 0.9416666666666667,
-        "retrieval_recall_at_k": 0.9416666666666667,
-        "hallucination_rate": 0.0,
-        "memory_bloat": 130.0,
-        "adaptation_latency": 0.4936708860759494,
-        "stability_score": 0.9600694444444444
+        "task_success_rate": 0.64375,
+        "retrieval_precision_at_k": 0.9770833333333333,
+        "retrieval_recall_at_k": 0.9770833333333333,
+        "hallucination_rate": 0.34791666666666665,
+        "memory_bloat": 101.0,
+        "adaptation_latency": 1.286231884057971,
+        "stability_score": 0.9236284722222222
       },
       {
-        "task_success_rate": 0.925,
-        "retrieval_precision_at_k": 0.9416666666666667,
-        "retrieval_recall_at_k": 0.9416666666666667,
-        "hallucination_rate": 0.0,
-        "memory_bloat": 130.0,
-        "adaptation_latency": 0.0,
-        "stability_score": 0.930625
+        "task_success_rate": 0.6395833333333334,
+        "retrieval_precision_at_k": 0.9729166666666667,
+        "retrieval_recall_at_k": 0.9729166666666667,
+        "hallucination_rate": 0.34791666666666665,
+        "memory_bloat": 101.0,
+        "adaptation_latency": 1.578358208955224,
+        "stability_score": 0.9202951388888889
       },
       {
-        "task_success_rate": 0.9583333333333334,
-        "retrieval_precision_at_k": 0.9416666666666667,
-        "retrieval_recall_at_k": 0.9416666666666667,
-        "hallucination_rate": 0.0,
-        "memory_bloat": 130.0,
-        "adaptation_latency": 0.0,
-        "stability_score": 0.9600694444444444
+        "task_success_rate": 0.6416666666666666,
+        "retrieval_precision_at_k": 0.975,
+        "retrieval_recall_at_k": 0.975,
+        "hallucination_rate": 0.34791666666666665,
+        "memory_bloat": 101.0,
+        "adaptation_latency": 1.4338235294117647,
+        "stability_score": 0.9219444444444445
       },
       {
-        "task_success_rate": 0.95,
-        "retrieval_precision_at_k": 0.9416666666666667,
-        "retrieval_recall_at_k": 0.9416666666666667,
-        "hallucination_rate": 0.0,
-        "memory_bloat": 130.0,
-        "adaptation_latency": 0.0,
-        "stability_score": 0.9525
+        "task_success_rate": 0.6416666666666666,
+        "retrieval_precision_at_k": 0.975,
+        "retrieval_recall_at_k": 0.975,
+        "hallucination_rate": 0.34791666666666665,
+        "memory_bloat": 101.0,
+        "adaptation_latency": 1.4338235294117647,
+        "stability_score": 0.9219444444444445
+      },
+      {
+        "task_success_rate": 0.6416666666666666,
+        "retrieval_precision_at_k": 0.975,
+        "retrieval_recall_at_k": 0.975,
+        "hallucination_rate": 0.34791666666666665,
+        "memory_bloat": 101.0,
+        "adaptation_latency": 1.4338235294117647,
+        "stability_score": 0.9219444444444445
+      },
+      {
+        "task_success_rate": 0.6541666666666667,
+        "retrieval_precision_at_k": 0.9875,
+        "retrieval_recall_at_k": 0.9875,
+        "hallucination_rate": 0.34791666666666665,
+        "memory_bloat": 101.0,
+        "adaptation_latency": 0.75,
+        "stability_score": 0.9325694444444445
+      },
+      {
+        "task_success_rate": 0.6541666666666667,
+        "retrieval_precision_at_k": 0.9875,
+        "retrieval_recall_at_k": 0.9875,
+        "hallucination_rate": 0.34791666666666665,
+        "memory_bloat": 101.0,
+        "adaptation_latency": 0.75,
+        "stability_score": 0.9325694444444445
+      },
+      {
+        "task_success_rate": 0.6416666666666666,
+        "retrieval_precision_at_k": 0.975,
+        "retrieval_recall_at_k": 0.975,
+        "hallucination_rate": 0.34791666666666665,
+        "memory_bloat": 101.0,
+        "adaptation_latency": 1.4338235294117647,
+        "stability_score": 0.9219444444444445
+      },
+      {
+        "task_success_rate": 0.6395833333333334,
+        "retrieval_precision_at_k": 0.9729166666666667,
+        "retrieval_recall_at_k": 0.9729166666666667,
+        "hallucination_rate": 0.34791666666666665,
+        "memory_bloat": 101.0,
+        "adaptation_latency": 1.578358208955224,
+        "stability_score": 0.9202951388888889
       }
     ],
     "aggregate_mean": {
-      "task_success_rate": 0.9550000000000001,
-      "retrieval_precision_at_k": 0.9416666666666667,
-      "retrieval_recall_at_k": 0.9416666666666667,
-      "hallucination_rate": 0.0,
-      "memory_bloat": 130.0,
-      "adaptation_latency": 0.09873417721518987,
-      "stability_score": 0.9573750000000001
+      "task_success_rate": 0.64375,
+      "retrieval_precision_at_k": 0.9770833333333334,
+      "retrieval_recall_at_k": 0.9770833333333334,
+      "hallucination_rate": 0.34791666666666665,
+      "memory_bloat": 101.0,
+      "adaptation_latency": 1.3256600628570703,
+      "stability_score": 0.9237430555555555
     },
-    "n_seeds": 5
+    "n_seeds": 10,
+    "ablation_config": {
+      "name": "HierMemory-noDrift",
+      "drift_enabled": false,
+      "fixed_consolidation_interval": 15,
+      "use_graph_semantic": true,
+      "use_vector_semantic": true,
+      "use_conflict_resolution": true
+    }
+  },
+  "VectorOnly-noGraph": {
+    "per_seed": [
+      {
+        "task_success_rate": 0.5645833333333333,
+        "retrieval_precision_at_k": 0.8979166666666667,
+        "retrieval_recall_at_k": 0.8979166666666667,
+        "hallucination_rate": 0.4375,
+        "memory_bloat": 111.0,
+        "adaptation_latency": 2.25,
+        "stability_score": 0.8840451388888889
+      },
+      {
+        "task_success_rate": 0.5791666666666666,
+        "retrieval_precision_at_k": 0.9125,
+        "retrieval_recall_at_k": 0.9125,
+        "hallucination_rate": 0.4375,
+        "memory_bloat": 111.25,
+        "adaptation_latency": 0.5,
+        "stability_score": 0.8875694444444444
+      },
+      {
+        "task_success_rate": 0.5625,
+        "retrieval_precision_at_k": 0.8958333333333334,
+        "retrieval_recall_at_k": 0.8958333333333334,
+        "hallucination_rate": 0.4375,
+        "memory_bloat": 111.25,
+        "adaptation_latency": 2.5,
+        "stability_score": 0.8836805555555556
+      },
+      {
+        "task_success_rate": 0.5770833333333334,
+        "retrieval_precision_at_k": 0.9104166666666667,
+        "retrieval_recall_at_k": 0.9104166666666667,
+        "hallucination_rate": 0.44166666666666665,
+        "memory_bloat": 111.5,
+        "adaptation_latency": 0.75,
+        "stability_score": 0.8869618055555556
+      },
+      {
+        "task_success_rate": 0.5770833333333334,
+        "retrieval_precision_at_k": 0.9104166666666667,
+        "retrieval_recall_at_k": 0.9104166666666667,
+        "hallucination_rate": 0.4375,
+        "memory_bloat": 111.25,
+        "adaptation_latency": 0.75,
+        "stability_score": 0.8869618055555556
+      },
+      {
+        "task_success_rate": 0.625,
+        "retrieval_precision_at_k": 0.9583333333333334,
+        "retrieval_recall_at_k": 0.9583333333333334,
+        "hallucination_rate": 0.4395833333333333,
+        "memory_bloat": 111.25,
+        "adaptation_latency": 2.091666666666667,
+        "stability_score": 0.9097222222222222
+      },
+      {
+        "task_success_rate": 0.6541666666666667,
+        "retrieval_precision_at_k": 0.9875,
+        "retrieval_recall_at_k": 0.9875,
+        "hallucination_rate": 0.4395833333333333,
+        "memory_bloat": 111.25,
+        "adaptation_latency": 0.75,
+        "stability_score": 0.9325694444444445
+      },
+      {
+        "task_success_rate": 0.6541666666666667,
+        "retrieval_precision_at_k": 0.9875,
+        "retrieval_recall_at_k": 0.9875,
+        "hallucination_rate": 0.4375,
+        "memory_bloat": 111.0,
+        "adaptation_latency": 0.75,
+        "stability_score": 0.9325694444444445
+      },
+      {
+        "task_success_rate": 0.6229166666666667,
+        "retrieval_precision_at_k": 0.95625,
+        "retrieval_recall_at_k": 0.95625,
+        "hallucination_rate": 0.4375,
+        "memory_bloat": 111.25,
+        "adaptation_latency": 2.1483050847457625,
+        "stability_score": 0.9083506944444444
+      },
+      {
+        "task_success_rate": 0.5645833333333333,
+        "retrieval_precision_at_k": 0.8979166666666667,
+        "retrieval_recall_at_k": 0.8979166666666667,
+        "hallucination_rate": 0.44166666666666665,
+        "memory_bloat": 111.25,
+        "adaptation_latency": 2.25,
+        "stability_score": 0.8840451388888889
+      }
+    ],
+    "aggregate_mean": {
+      "task_success_rate": 0.598125,
+      "retrieval_precision_at_k": 0.9314583333333333,
+      "retrieval_recall_at_k": 0.9314583333333333,
+      "hallucination_rate": 0.43875000000000003,
+      "memory_bloat": 111.225,
+      "adaptation_latency": 1.473997175141243,
+      "stability_score": 0.8996475694444446
+    },
+    "n_seeds": 10,
+    "ablation_config": {
+      "name": "VectorOnly-noGraph",
+      "drift_enabled": true,
+      "fixed_consolidation_interval": null,
+      "use_graph_semantic": false,
+      "use_vector_semantic": true,
+      "use_conflict_resolution": false
+    }
+  },
+  "GraphOnly-noVector": {
+    "per_seed": [
+      {
+        "task_success_rate": 0.6541666666666667,
+        "retrieval_precision_at_k": 0.9875,
+        "retrieval_recall_at_k": 0.9875,
+        "hallucination_rate": 0.4375,
+        "memory_bloat": 111.0,
+        "adaptation_latency": 0.75,
+        "stability_score": 0.9325694444444445
+      },
+      {
+        "task_success_rate": 0.65625,
+        "retrieval_precision_at_k": 0.9895833333333334,
+        "retrieval_recall_at_k": 0.9895833333333334,
+        "hallucination_rate": 0.4375,
+        "memory_bloat": 111.25,
+        "adaptation_latency": 0.6233333333333333,
+        "stability_score": 0.9344618055555556
+      },
+      {
+        "task_success_rate": 0.6541666666666667,
+        "retrieval_precision_at_k": 0.9875,
+        "retrieval_recall_at_k": 0.9875,
+        "hallucination_rate": 0.4375,
+        "memory_bloat": 111.25,
+        "adaptation_latency": 0.75,
+        "stability_score": 0.9325694444444445
+      },
+      {
+        "task_success_rate": 0.6541666666666667,
+        "retrieval_precision_at_k": 0.9875,
+        "retrieval_recall_at_k": 0.9875,
+        "hallucination_rate": 0.44166666666666665,
+        "memory_bloat": 111.5,
+        "adaptation_latency": 0.75,
+        "stability_score": 0.9325694444444445
+      },
+      {
+        "task_success_rate": 0.6541666666666667,
+        "retrieval_precision_at_k": 0.9875,
+        "retrieval_recall_at_k": 0.9875,
+        "hallucination_rate": 0.4375,
+        "memory_bloat": 111.25,
+        "adaptation_latency": 0.75,
+        "stability_score": 0.9325694444444445
+      },
+      {
+        "task_success_rate": 0.6541666666666667,
+        "retrieval_precision_at_k": 0.9875,
+        "retrieval_recall_at_k": 0.9875,
+        "hallucination_rate": 0.4395833333333333,
+        "memory_bloat": 111.25,
+        "adaptation_latency": 0.75,
+        "stability_score": 0.9325694444444445
+      },
+      {
+        "task_success_rate": 0.6541666666666667,
+        "retrieval_precision_at_k": 0.9875,
+        "retrieval_recall_at_k": 0.9875,
+        "hallucination_rate": 0.4395833333333333,
+        "memory_bloat": 111.25,
+        "adaptation_latency": 0.75,
+        "stability_score": 0.9325694444444445
+      },
+      {
+        "task_success_rate": 0.6541666666666667,
+        "retrieval_precision_at_k": 0.9875,
+        "retrieval_recall_at_k": 0.9875,
+        "hallucination_rate": 0.4375,
+        "memory_bloat": 111.0,
+        "adaptation_latency": 0.75,
+        "stability_score": 0.9325694444444445
+      },
+      {
+        "task_success_rate": 0.6541666666666667,
+        "retrieval_precision_at_k": 0.9875,
+        "retrieval_recall_at_k": 0.9875,
+        "hallucination_rate": 0.4375,
+        "memory_bloat": 111.25,
+        "adaptation_latency": 0.75,
+        "stability_score": 0.9325694444444445
+      },
+      {
+        "task_success_rate": 0.6541666666666667,
+        "retrieval_precision_at_k": 0.9875,
+        "retrieval_recall_at_k": 0.9875,
+        "hallucination_rate": 0.44166666666666665,
+        "memory_bloat": 111.25,
+        "adaptation_latency": 0.75,
+        "stability_score": 0.9325694444444445
+      }
+    ],
+    "aggregate_mean": {
+      "task_success_rate": 0.654375,
+      "retrieval_precision_at_k": 0.9877083333333333,
+      "retrieval_recall_at_k": 0.9877083333333333,
+      "hallucination_rate": 0.43875000000000003,
+      "memory_bloat": 111.225,
+      "adaptation_latency": 0.7373333333333333,
+      "stability_score": 0.9327586805555554
+    },
+    "n_seeds": 10,
+    "ablation_config": {
+      "name": "GraphOnly-noVector",
+      "drift_enabled": true,
+      "fixed_consolidation_interval": null,
+      "use_graph_semantic": true,
+      "use_vector_semantic": false,
+      "use_conflict_resolution": true
+    }
+  },
+  "HiDrift-noConflict": {
+    "per_seed": [
+      {
+        "task_success_rate": 0.6541666666666667,
+        "retrieval_precision_at_k": 0.9875,
+        "retrieval_recall_at_k": 0.9875,
+        "hallucination_rate": 0.4375,
+        "memory_bloat": 111.0,
+        "adaptation_latency": 0.75,
+        "stability_score": 0.9325694444444445
+      },
+      {
+        "task_success_rate": 0.65625,
+        "retrieval_precision_at_k": 0.9895833333333334,
+        "retrieval_recall_at_k": 0.9895833333333334,
+        "hallucination_rate": 0.4375,
+        "memory_bloat": 111.25,
+        "adaptation_latency": 0.6233333333333333,
+        "stability_score": 0.9344618055555556
+      },
+      {
+        "task_success_rate": 0.6541666666666667,
+        "retrieval_precision_at_k": 0.9875,
+        "retrieval_recall_at_k": 0.9875,
+        "hallucination_rate": 0.4375,
+        "memory_bloat": 111.25,
+        "adaptation_latency": 0.75,
+        "stability_score": 0.9325694444444445
+      },
+      {
+        "task_success_rate": 0.6541666666666667,
+        "retrieval_precision_at_k": 0.9875,
+        "retrieval_recall_at_k": 0.9875,
+        "hallucination_rate": 0.44166666666666665,
+        "memory_bloat": 111.5,
+        "adaptation_latency": 0.75,
+        "stability_score": 0.9325694444444445
+      },
+      {
+        "task_success_rate": 0.6541666666666667,
+        "retrieval_precision_at_k": 0.9875,
+        "retrieval_recall_at_k": 0.9875,
+        "hallucination_rate": 0.4375,
+        "memory_bloat": 111.25,
+        "adaptation_latency": 0.75,
+        "stability_score": 0.9325694444444445
+      },
+      {
+        "task_success_rate": 0.6541666666666667,
+        "retrieval_precision_at_k": 0.9875,
+        "retrieval_recall_at_k": 0.9875,
+        "hallucination_rate": 0.4395833333333333,
+        "memory_bloat": 111.25,
+        "adaptation_latency": 0.75,
+        "stability_score": 0.9325694444444445
+      },
+      {
+        "task_success_rate": 0.6541666666666667,
+        "retrieval_precision_at_k": 0.9875,
+        "retrieval_recall_at_k": 0.9875,
+        "hallucination_rate": 0.4395833333333333,
+        "memory_bloat": 111.25,
+        "adaptation_latency": 0.75,
+        "stability_score": 0.9325694444444445
+      },
+      {
+        "task_success_rate": 0.6541666666666667,
+        "retrieval_precision_at_k": 0.9875,
+        "retrieval_recall_at_k": 0.9875,
+        "hallucination_rate": 0.4375,
+        "memory_bloat": 111.0,
+        "adaptation_latency": 0.75,
+        "stability_score": 0.9325694444444445
+      },
+      {
+        "task_success_rate": 0.6541666666666667,
+        "retrieval_precision_at_k": 0.9875,
+        "retrieval_recall_at_k": 0.9875,
+        "hallucination_rate": 0.4375,
+        "memory_bloat": 111.25,
+        "adaptation_latency": 0.75,
+        "stability_score": 0.9325694444444445
+      },
+      {
+        "task_success_rate": 0.6541666666666667,
+        "retrieval_precision_at_k": 0.9875,
+        "retrieval_recall_at_k": 0.9875,
+        "hallucination_rate": 0.44166666666666665,
+        "memory_bloat": 111.25,
+        "adaptation_latency": 0.75,
+        "stability_score": 0.9325694444444445
+      }
+    ],
+    "aggregate_mean": {
+      "task_success_rate": 0.654375,
+      "retrieval_precision_at_k": 0.9877083333333333,
+      "retrieval_recall_at_k": 0.9877083333333333,
+      "hallucination_rate": 0.43875000000000003,
+      "memory_bloat": 111.225,
+      "adaptation_latency": 0.7373333333333333,
+      "stability_score": 0.9327586805555554
+    },
+    "n_seeds": 10,
+    "ablation_config": {
+      "name": "HiDrift-noConflict",
+      "drift_enabled": true,
+      "fixed_consolidation_interval": null,
+      "use_graph_semantic": true,
+      "use_vector_semantic": true,
+      "use_conflict_resolution": false
+    }
+  },
+  "HiDrift-noDriftSignal": {
+    "per_seed": [
+      {
+        "task_success_rate": 0.6083333333333334,
+        "retrieval_precision_at_k": 0.9416666666666667,
+        "retrieval_recall_at_k": 0.9416666666666667,
+        "hallucination_rate": 0.29583333333333334,
+        "memory_bloat": 98.75,
+        "adaptation_latency": 3.2596153846153846,
+        "stability_score": 0.8997222222222222
+      },
+      {
+        "task_success_rate": 0.6229166666666667,
+        "retrieval_precision_at_k": 0.95625,
+        "retrieval_recall_at_k": 0.95625,
+        "hallucination_rate": 0.29583333333333334,
+        "memory_bloat": 98.75,
+        "adaptation_latency": 2.01271186440678,
+        "stability_score": 0.9083506944444444
+      },
+      {
+        "task_success_rate": 0.60625,
+        "retrieval_precision_at_k": 0.9395833333333333,
+        "retrieval_recall_at_k": 0.9395833333333333,
+        "hallucination_rate": 0.29583333333333334,
+        "memory_bloat": 98.75,
+        "adaptation_latency": 3.426470588235294,
+        "stability_score": 0.8986284722222222
+      },
+      {
+        "task_success_rate": 0.6208333333333333,
+        "retrieval_precision_at_k": 0.9541666666666666,
+        "retrieval_recall_at_k": 0.9541666666666666,
+        "hallucination_rate": 0.29583333333333334,
+        "memory_bloat": 98.75,
+        "adaptation_latency": 2.1982758620689653,
+        "stability_score": 0.9070138888888889
+      },
+      {
+        "task_success_rate": 0.6208333333333333,
+        "retrieval_precision_at_k": 0.9541666666666666,
+        "retrieval_recall_at_k": 0.9541666666666666,
+        "hallucination_rate": 0.29583333333333334,
+        "memory_bloat": 98.75,
+        "adaptation_latency": 2.1982758620689653,
+        "stability_score": 0.9070138888888889
+      },
+      {
+        "task_success_rate": 0.625,
+        "retrieval_precision_at_k": 0.9583333333333334,
+        "retrieval_recall_at_k": 0.9583333333333334,
+        "hallucination_rate": 0.29583333333333334,
+        "memory_bloat": 98.75,
+        "adaptation_latency": 2.091666666666667,
+        "stability_score": 0.9097222222222222
+      },
+      {
+        "task_success_rate": 0.6541666666666667,
+        "retrieval_precision_at_k": 0.9875,
+        "retrieval_recall_at_k": 0.9875,
+        "hallucination_rate": 0.29583333333333334,
+        "memory_bloat": 98.75,
+        "adaptation_latency": 0.75,
+        "stability_score": 0.9325694444444445
+      },
+      {
+        "task_success_rate": 0.6541666666666667,
+        "retrieval_precision_at_k": 0.9875,
+        "retrieval_recall_at_k": 0.9875,
+        "hallucination_rate": 0.29583333333333334,
+        "memory_bloat": 98.75,
+        "adaptation_latency": 0.75,
+        "stability_score": 0.9325694444444445
+      },
+      {
+        "task_success_rate": 0.6229166666666667,
+        "retrieval_precision_at_k": 0.95625,
+        "retrieval_recall_at_k": 0.95625,
+        "hallucination_rate": 0.29583333333333334,
+        "memory_bloat": 98.75,
+        "adaptation_latency": 2.1483050847457625,
+        "stability_score": 0.9083506944444444
+      },
+      {
+        "task_success_rate": 0.6083333333333334,
+        "retrieval_precision_at_k": 0.9416666666666667,
+        "retrieval_recall_at_k": 0.9416666666666667,
+        "hallucination_rate": 0.29583333333333334,
+        "memory_bloat": 98.75,
+        "adaptation_latency": 3.2596153846153846,
+        "stability_score": 0.8997222222222222
+      }
+    ],
+    "aggregate_mean": {
+      "task_success_rate": 0.624375,
+      "retrieval_precision_at_k": 0.9577083333333334,
+      "retrieval_recall_at_k": 0.9577083333333334,
+      "hallucination_rate": 0.29583333333333334,
+      "memory_bloat": 98.75,
+      "adaptation_latency": 2.2094936697423204,
+      "stability_score": 0.9103663194444443
+    },
+    "n_seeds": 10,
+    "ablation_config": {
+      "name": "HiDrift-noDriftSignal",
+      "drift_enabled": false,
+      "fixed_consolidation_interval": 20,
+      "use_graph_semantic": true,
+      "use_vector_semantic": true,
+      "use_conflict_resolution": true
+    }
   },
   "HiDrift-full": {
     "per_seed": [
       {
-        "task_success_rate": 0.9833333333333333,
-        "retrieval_precision_at_k": 0.95,
-        "retrieval_recall_at_k": 0.95,
-        "hallucination_rate": 0.0,
-        "memory_bloat": 146.0,
-        "adaptation_latency": 0.0,
-        "stability_score": 0.9836111111111111
+        "task_success_rate": 0.6541666666666667,
+        "retrieval_precision_at_k": 0.9875,
+        "retrieval_recall_at_k": 0.9875,
+        "hallucination_rate": 0.4375,
+        "memory_bloat": 111.0,
+        "adaptation_latency": 0.75,
+        "stability_score": 0.9325694444444445
       },
       {
-        "task_success_rate": 0.9583333333333334,
-        "retrieval_precision_at_k": 0.95,
-        "retrieval_recall_at_k": 0.95,
-        "hallucination_rate": 0.0,
-        "memory_bloat": 146.0,
-        "adaptation_latency": 0.4936708860759494,
-        "stability_score": 0.9600694444444444
+        "task_success_rate": 0.65625,
+        "retrieval_precision_at_k": 0.9895833333333334,
+        "retrieval_recall_at_k": 0.9895833333333334,
+        "hallucination_rate": 0.4375,
+        "memory_bloat": 111.25,
+        "adaptation_latency": 0.6233333333333333,
+        "stability_score": 0.9344618055555556
       },
       {
-        "task_success_rate": 0.925,
-        "retrieval_precision_at_k": 0.95,
-        "retrieval_recall_at_k": 0.95,
-        "hallucination_rate": 0.0,
-        "memory_bloat": 146.0,
-        "adaptation_latency": 0.0,
-        "stability_score": 0.930625
+        "task_success_rate": 0.6541666666666667,
+        "retrieval_precision_at_k": 0.9875,
+        "retrieval_recall_at_k": 0.9875,
+        "hallucination_rate": 0.4375,
+        "memory_bloat": 111.25,
+        "adaptation_latency": 0.75,
+        "stability_score": 0.9325694444444445
       },
       {
-        "task_success_rate": 0.9583333333333334,
-        "retrieval_precision_at_k": 0.8666666666666667,
-        "retrieval_recall_at_k": 0.8666666666666667,
-        "hallucination_rate": 0.0,
-        "memory_bloat": 146.0,
-        "adaptation_latency": 0.0,
-        "stability_score": 0.9600694444444444
+        "task_success_rate": 0.6541666666666667,
+        "retrieval_precision_at_k": 0.9875,
+        "retrieval_recall_at_k": 0.9875,
+        "hallucination_rate": 0.44166666666666665,
+        "memory_bloat": 111.5,
+        "adaptation_latency": 0.75,
+        "stability_score": 0.9325694444444445
       },
       {
-        "task_success_rate": 0.95,
-        "retrieval_precision_at_k": 0.95,
-        "retrieval_recall_at_k": 0.95,
-        "hallucination_rate": 0.0,
-        "memory_bloat": 146.0,
-        "adaptation_latency": 0.0,
-        "stability_score": 0.9525
+        "task_success_rate": 0.6541666666666667,
+        "retrieval_precision_at_k": 0.9875,
+        "retrieval_recall_at_k": 0.9875,
+        "hallucination_rate": 0.4375,
+        "memory_bloat": 111.25,
+        "adaptation_latency": 0.75,
+        "stability_score": 0.9325694444444445
+      },
+      {
+        "task_success_rate": 0.6541666666666667,
+        "retrieval_precision_at_k": 0.9875,
+        "retrieval_recall_at_k": 0.9875,
+        "hallucination_rate": 0.4395833333333333,
+        "memory_bloat": 111.25,
+        "adaptation_latency": 0.75,
+        "stability_score": 0.9325694444444445
+      },
+      {
+        "task_success_rate": 0.6541666666666667,
+        "retrieval_precision_at_k": 0.9875,
+        "retrieval_recall_at_k": 0.9875,
+        "hallucination_rate": 0.4395833333333333,
+        "memory_bloat": 111.25,
+        "adaptation_latency": 0.75,
+        "stability_score": 0.9325694444444445
+      },
+      {
+        "task_success_rate": 0.6541666666666667,
+        "retrieval_precision_at_k": 0.9875,
+        "retrieval_recall_at_k": 0.9875,
+        "hallucination_rate": 0.4375,
+        "memory_bloat": 111.0,
+        "adaptation_latency": 0.75,
+        "stability_score": 0.9325694444444445
+      },
+      {
+        "task_success_rate": 0.6541666666666667,
+        "retrieval_precision_at_k": 0.9875,
+        "retrieval_recall_at_k": 0.9875,
+        "hallucination_rate": 0.4375,
+        "memory_bloat": 111.25,
+        "adaptation_latency": 0.75,
+        "stability_score": 0.9325694444444445
+      },
+      {
+        "task_success_rate": 0.6541666666666667,
+        "retrieval_precision_at_k": 0.9875,
+        "retrieval_recall_at_k": 0.9875,
+        "hallucination_rate": 0.44166666666666665,
+        "memory_bloat": 111.25,
+        "adaptation_latency": 0.75,
+        "stability_score": 0.9325694444444445
       }
     ],
     "aggregate_mean": {
-      "task_success_rate": 0.9550000000000001,
-      "retrieval_precision_at_k": 0.9333333333333332,
-      "retrieval_recall_at_k": 0.9333333333333332,
-      "hallucination_rate": 0.0,
-      "memory_bloat": 146.0,
-      "adaptation_latency": 0.09873417721518987,
-      "stability_score": 0.9573750000000001
+      "task_success_rate": 0.654375,
+      "retrieval_precision_at_k": 0.9877083333333333,
+      "retrieval_recall_at_k": 0.9877083333333333,
+      "hallucination_rate": 0.43875000000000003,
+      "memory_bloat": 111.225,
+      "adaptation_latency": 0.7373333333333333,
+      "stability_score": 0.9327586805555554
     },
-    "n_seeds": 5
+    "n_seeds": 10,
+    "ablation_config": {
+      "name": "HiDrift-full",
+      "drift_enabled": true,
+      "fixed_consolidation_interval": null,
+      "use_graph_semantic": true,
+      "use_vector_semantic": true,
+      "use_conflict_resolution": true
+    }
   }
 }
