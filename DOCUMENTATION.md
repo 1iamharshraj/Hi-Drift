@@ -366,3 +366,12 @@ pip install -e ".[dev,api]"
 3. Add MLflow experiment tracking and Hydra config composition
 4. Add richer timeline-level plotting from raw turn traces
 5. Extend conflict policies with contradiction/supersession provenance scoring
+
+## 16. ICCV-Grade Workflow
+1. Prepare official benchmark files described in `ICCV_PLAN.md`
+2. Run `python scripts/run_eval_matrix.py --config configs/eval/matrix_iccv.json`
+3. Run `python scripts/check_iccv_readiness.py`
+4. Confirm:
+   - `paper/tables/iccv_benchmark_registry_check.md`
+   - `paper/tables/iccv_publication_readiness.md`
+   - `paper/tables/iccv_readiness_summary.json`

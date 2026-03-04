@@ -158,6 +158,10 @@ Expected outputs:
 12. `paper/figures/memory_growth_trace.png`
 13. `paper/figures/constraint_violation_trend.png`
 
+ICCV checks:
+1. `python scripts/check_iccv_readiness.py`
+2. Validate `paper/tables/iccv_readiness_summary.json`
+
 ## 8. Suggested CI Command Order
 
 ```powershell

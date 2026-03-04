@@ -16,6 +16,7 @@ It combines:
 5. Config defaults: `configs/`
 6. Scripts for eval/plots/calibration: `scripts/`
 7. Publication gate checks: `scripts/check_publication_readiness.py`, `scripts/check_benchmark_registry.py`
+8. ICCV-grade plan: `ICCV_PLAN.md`
 
 ## Table Of Contents
 1. Project Goals
@@ -182,6 +183,13 @@ python scripts/check_publication_readiness.py
 ### One-command publishability pipeline
 ```powershell
 make paper_ready
+```
+
+### ICCV-grade pipeline
+```powershell
+make eval_iccv
+python scripts/export_figures.py
+make iccv_check
 ```
 
 Output:
