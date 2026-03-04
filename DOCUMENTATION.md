@@ -222,6 +222,10 @@ python scripts/run_eval.py
 
 Generates:
 1. `artifacts/eval_<uuid>.json`
+2. `systems` (baseline/ablation matrix)
+3. `scenario_reports` (per-scenario aggregates)
+4. `traces` (per-turn observability logs)
+5. `significance_vs_hidrift_full` (paired permutation p-values + effect sizes)
 
 ### 10.2 Calibrate drift threshold
 Command:
@@ -242,15 +246,16 @@ Outputs:
 1. Aggregate tables:
    - `paper/tables/aggregate_metrics.md`
    - `paper/tables/aggregate_metrics.json`
-2. Hybrid semantic table:
-   - `paper/tables/hybrid_semantic_metrics.md`
+2. Statistical tables:
+   - `paper/tables/significance_report.md`
+   - `paper/tables/scenario_metrics.md`
 3. Charts:
-   - `paper/figures/aggregate_higher_is_better.png`
-   - `paper/figures/aggregate_lower_is_better.png`
-   - `paper/figures/hybrid_constraint_hit_rate.png`
-   - `paper/figures/conflict_resolution_accuracy.png`
-   - `paper/figures/drift_trigger_timeline.png`
-   - `paper/figures/consolidation_event_count.png`
+   - `paper/figures/task_success_with_errorbars.png`
+   - `paper/figures/adaptation_latency_distribution.png`
+   - `paper/figures/scenario_success_heatmap.png`
+   - `paper/figures/drift_score_trace.png`
+   - `paper/figures/memory_growth_trace.png`
+   - `paper/figures/constraint_violation_trend.png`
 
 ## 12. Setup And Operations
 
@@ -300,8 +305,8 @@ pip install -e ".[dev,api]"
 
 ## 14. Limitations
 1. Semantic graph backend is local `networkx`, not distributed
-2. Synthetic evaluation benchmark only
-3. Metrics are aggregate-focused, not full statistical significance suite
+2. Benchmark realism improved but still includes synthetic-heavy components
+3. Statistical tests currently use paired permutation + effect size; no multi-comparison correction pipeline yet
 4. Vector memory is lightweight in-process rather than dedicated vector DB
 
 ## 15. Future Extension Points

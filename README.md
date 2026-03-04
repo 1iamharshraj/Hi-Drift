@@ -169,6 +169,11 @@ python scripts/run_eval.py
 
 Output:
 1. `artifacts/eval_<uuid>.json`
+2. Includes:
+   - baseline + ablation systems (`RAG-only`, `HierMemory-noDrift`, `VectorOnly-noGraph`, `GraphOnly-noVector`, `HiDrift-noConflict`, `HiDrift-noDriftSignal`, `HiDrift-full`)
+   - multi-scenario reports (`personal_assistant_drift`, `tool_api_drift`, `contradiction_drift`, `semi_real_trace`)
+   - per-turn trace logs
+   - significance summary vs `HiDrift-full`
 
 ### Drift threshold calibration artifact
 ```powershell
@@ -188,13 +193,14 @@ python scripts/export_figures.py
 Generated artifacts:
 1. `paper/tables/aggregate_metrics.md`
 2. `paper/tables/aggregate_metrics.json`
-3. `paper/tables/hybrid_semantic_metrics.md`
-4. `paper/figures/aggregate_higher_is_better.png`
-5. `paper/figures/aggregate_lower_is_better.png`
-6. `paper/figures/hybrid_constraint_hit_rate.png`
-7. `paper/figures/conflict_resolution_accuracy.png`
-8. `paper/figures/drift_trigger_timeline.png`
-9. `paper/figures/consolidation_event_count.png`
+3. `paper/tables/significance_report.md`
+4. `paper/tables/scenario_metrics.md`
+5. `paper/figures/task_success_with_errorbars.png`
+6. `paper/figures/adaptation_latency_distribution.png`
+7. `paper/figures/scenario_success_heatmap.png`
+8. `paper/figures/drift_score_trace.png`
+9. `paper/figures/memory_growth_trace.png`
+10. `paper/figures/constraint_violation_trend.png`
 
 ## 10) Known Operational Notes
 1. API runtime defaults to Gemini and requires `GEMINI_API_KEY`
@@ -230,5 +236,6 @@ Suggested loop:
 2. Run `pytest -q`
 3. Run `python scripts/run_eval.py`
 4. Run `python scripts/export_figures.py`
-5. Review outputs under `paper/` and `artifacts/`
-6. Update docs when behavior or contracts change
+5. Review `paper/tables/significance_report.md` for p-values/effect sizes
+6. Review `paper/figures/scenario_success_heatmap.png` and trace plots for discriminative behavior
+7. Update docs when behavior or contracts change

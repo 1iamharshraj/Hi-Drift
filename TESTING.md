@@ -112,7 +112,7 @@ python scripts/run_eval.py
 
 Expected:
 1. New `artifacts/eval_*.json` file created
-2. JSON contains `systems` and `aggregate_mean` entries
+2. JSON contains `systems`, `scenario_reports`, `traces`, and `significance_vs_hidrift_full`
 
 Run calibration:
 
@@ -132,13 +132,14 @@ python scripts/export_figures.py
 Expected outputs:
 1. `paper/tables/aggregate_metrics.md`
 2. `paper/tables/aggregate_metrics.json`
-3. `paper/tables/hybrid_semantic_metrics.md`
-4. `paper/figures/aggregate_higher_is_better.png`
-5. `paper/figures/aggregate_lower_is_better.png`
-6. `paper/figures/hybrid_constraint_hit_rate.png`
-7. `paper/figures/conflict_resolution_accuracy.png`
-8. `paper/figures/drift_trigger_timeline.png`
-9. `paper/figures/consolidation_event_count.png`
+3. `paper/tables/significance_report.md`
+4. `paper/tables/scenario_metrics.md`
+5. `paper/figures/task_success_with_errorbars.png`
+6. `paper/figures/adaptation_latency_distribution.png`
+7. `paper/figures/scenario_success_heatmap.png`
+8. `paper/figures/drift_score_trace.png`
+9. `paper/figures/memory_growth_trace.png`
+10. `paper/figures/constraint_violation_trend.png`
 
 ## 8. Suggested CI Command Order
 
@@ -188,4 +189,3 @@ python scripts/export_figures.py
 3. Visualization files generated successfully
 4. API endpoints accessible from Swagger
 5. Semantic graph endpoints return valid JSON
-

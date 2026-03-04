@@ -158,17 +158,26 @@ graph LR
 
 ```mermaid
 flowchart TB
-    EvalScript[run_eval.py] --> EvalArtifact["artifacts/eval_RUN_ID.json"]
+    EvalScript[run_eval.py] --> Suite[Benchmark Suite]
+    Suite --> B1[personal_assistant_drift]
+    Suite --> B2[tool_api_drift]
+    Suite --> B3[contradiction_drift]
+    Suite --> B4[semi_real_trace]
+    B1 --> EvalArtifact["artifacts/eval_RUN_ID.json"]
+    B2 --> EvalArtifact
+    B3 --> EvalArtifact
+    B4 --> EvalArtifact
+    EvalArtifact --> Sig[Significance Analysis]
     EvalArtifact --> ExportScript[export_figures.py]
-    ExportScript --> T1[paper/tables/aggregate_metrics.md]
-    ExportScript --> T2[paper/tables/aggregate_metrics.json]
-    ExportScript --> T3[paper/tables/hybrid_semantic_metrics.md]
-    ExportScript --> F1[paper/figures/aggregate_higher_is_better.png]
-    ExportScript --> F2[paper/figures/aggregate_lower_is_better.png]
-    ExportScript --> F3[paper/figures/hybrid_constraint_hit_rate.png]
-    ExportScript --> F4[paper/figures/conflict_resolution_accuracy.png]
-    ExportScript --> F5[paper/figures/drift_trigger_timeline.png]
-    ExportScript --> F6[paper/figures/consolidation_event_count.png]
+    Sig --> T1[paper/tables/significance_report.md]
+    ExportScript --> T2[paper/tables/aggregate_metrics.md]
+    ExportScript --> T3[paper/tables/scenario_metrics.md]
+    ExportScript --> F1[paper/figures/task_success_with_errorbars.png]
+    ExportScript --> F2[paper/figures/adaptation_latency_distribution.png]
+    ExportScript --> F3[paper/figures/scenario_success_heatmap.png]
+    ExportScript --> F4[paper/figures/drift_score_trace.png]
+    ExportScript --> F5[paper/figures/memory_growth_trace.png]
+    ExportScript --> F6[paper/figures/constraint_violation_trend.png]
 ```
 
 ## 10. Developer Navigation Map
