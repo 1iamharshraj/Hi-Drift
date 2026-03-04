@@ -49,6 +49,7 @@ Coverage includes:
 2. Memory router monotonic behavior
 3. Consolidation decay and semantic dedup
 4. Semantic graph upsert, conflict resolution, and hybrid retrieval shape
+5. Benchmark adapter and external trace manifest loading
 
 Run only unit tests:
 
@@ -110,9 +111,15 @@ Run evaluation:
 python scripts/run_eval.py
 ```
 
+Run publishable matrix:
+```powershell
+python scripts/run_eval_matrix.py --config configs/eval/matrix_publishable.json
+```
+
 Expected:
 1. New `artifacts/eval_*.json` file created
-2. JSON contains `systems`, `scenario_reports`, `traces`, and `significance_vs_hidrift_full`
+2. Matrix run also creates `artifacts/eval_matrix_*.json`
+3. JSON contains `systems`, `scenario_reports`, `traces`, `benchmark_protocol`, and `significance_vs_hidrift_full`
 
 Run calibration:
 
@@ -134,18 +141,21 @@ Expected outputs:
 2. `paper/tables/aggregate_metrics.json`
 3. `paper/tables/significance_report.md`
 4. `paper/tables/scenario_metrics.md`
-5. `paper/figures/task_success_with_errorbars.png`
-6. `paper/figures/adaptation_latency_distribution.png`
-7. `paper/figures/scenario_success_heatmap.png`
-8. `paper/figures/drift_score_trace.png`
-9. `paper/figures/memory_growth_trace.png`
-10. `paper/figures/constraint_violation_trend.png`
+5. `paper/tables/hypothesis_results.md`
+6. `paper/tables/cost_latency_table.md`
+7. `paper/tables/qualitative_failure_cases.md`
+8. `paper/figures/task_success_with_errorbars.png`
+9. `paper/figures/adaptation_latency_distribution.png`
+10. `paper/figures/scenario_success_heatmap.png`
+11. `paper/figures/drift_score_trace.png`
+12. `paper/figures/memory_growth_trace.png`
+13. `paper/figures/constraint_violation_trend.png`
 
 ## 8. Suggested CI Command Order
 
 ```powershell
 pytest -q
-python scripts/run_eval.py
+python scripts/run_eval_matrix.py --config configs/eval/matrix_publishable.json
 python scripts/export_figures.py
 ```
 

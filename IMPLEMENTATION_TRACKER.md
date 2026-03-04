@@ -10,7 +10,7 @@ Upgrade HiDrift from prototype evaluation to publishable-grade evidence pipeline
 - [x] M4: Statistical reporting (CI, paired significance, effect size)
 - [x] M5: Per-turn trace logging and discriminative visualizations
 - [x] M6: Tests updated for new report schema and robustness
-- [ ] M7: Docs fully aligned with publishable workflow
+- [x] M7: Docs fully aligned with publishable workflow
 
 ## Task Board
 
@@ -24,6 +24,7 @@ Upgrade HiDrift from prototype evaluation to publishable-grade evidence pipeline
 - [x] Add graph-only semantic baseline
 - [x] Add no-conflict-resolution ablation
 - [x] Add no-drift-trigger ablation
+- [x] Add literature-style wrappers (MemGPT-style, GenerativeAgents-style, FlatMem-TopK)
 
 ### Statistics
 - [x] Bootstrap 95% CI for core metrics
@@ -38,7 +39,7 @@ Upgrade HiDrift from prototype evaluation to publishable-grade evidence pipeline
 - [x] Constraint violation trend plot
 
 ### Documentation
-- [ ] Update README quick path for publishable runs
-- [ ] Update DOCUMENTATION with methods + stats protocol
-- [ ] Update TESTING with benchmark/stat validation
-- [ ] Update ARCHITECTURE with benchmark/report flow
+- [x] Update README quick path for publishable runs
+- [x] Update DOCUMENTATION with methods + stats protocol
+- [x] Update TESTING with benchmark/stat validation
+- [x] Update ARCHITECTURE with benchmark/report flow

@@ -158,20 +158,29 @@ graph LR
 
 ```mermaid
 flowchart TB
-    EvalScript[run_eval.py] --> Suite[Benchmark Suite]
+    MatrixScript[run_eval_matrix.py] --> EvalScript[run_eval.py]
+    EvalScript --> Suite[Benchmark Suite]
     Suite --> B1[personal_assistant_drift]
     Suite --> B2[tool_api_drift]
     Suite --> B3[contradiction_drift]
     Suite --> B4[semi_real_trace]
+    Suite --> B5[locomo_like_trace]
+    Suite --> B6[longmem_like_trace]
     B1 --> EvalArtifact["artifacts/eval_RUN_ID.json"]
     B2 --> EvalArtifact
     B3 --> EvalArtifact
     B4 --> EvalArtifact
+    B5 --> EvalArtifact
+    B6 --> EvalArtifact
+    MatrixScript --> MatrixArtifact["artifacts/eval_matrix_MATRIX_ID.json"]
     EvalArtifact --> Sig[Significance Analysis]
     EvalArtifact --> ExportScript[export_figures.py]
     Sig --> T1[paper/tables/significance_report.md]
     ExportScript --> T2[paper/tables/aggregate_metrics.md]
     ExportScript --> T3[paper/tables/scenario_metrics.md]
+    ExportScript --> T4[paper/tables/hypothesis_results.md]
+    ExportScript --> T5[paper/tables/cost_latency_table.md]
+    ExportScript --> T6[paper/tables/qualitative_failure_cases.md]
     ExportScript --> F1[paper/figures/task_success_with_errorbars.png]
     ExportScript --> F2[paper/figures/adaptation_latency_distribution.png]
     ExportScript --> F3[paper/figures/scenario_success_heatmap.png]

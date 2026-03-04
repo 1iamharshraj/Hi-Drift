@@ -162,18 +162,24 @@ pytest -v --durations=10
 
 ## 8) Evaluation Guide
 
-### Run experiment matrix
+### Run single eval
 ```powershell
 python scripts/run_eval.py
 ```
 
+### Run publishable matrix (main comparison + ablations)
+```powershell
+python scripts/run_eval_matrix.py --config configs/eval/matrix_publishable.json
+```
+
 Output:
 1. `artifacts/eval_<uuid>.json`
+2. `artifacts/eval_matrix_<uuid>.json` (for matrix runs)
 2. Includes:
-   - baseline + ablation systems (`RAG-only`, `HierMemory-noDrift`, `VectorOnly-noGraph`, `GraphOnly-noVector`, `HiDrift-noConflict`, `HiDrift-noDriftSignal`, `HiDrift-full`)
-   - multi-scenario reports (`personal_assistant_drift`, `tool_api_drift`, `contradiction_drift`, `semi_real_trace`)
+   - baseline + ablation systems (`RAG-only`, `MemGPT-style`, `GenerativeAgents-style`, `FlatMem-TopK`, `VectorOnly-noGraph`, `GraphOnly-noVector`, `HiDrift-noConflict`, `HiDrift-noDriftSignal`, `HiDrift-full`)
+   - multi-scenario reports (`personal_assistant_drift`, `tool_api_drift`, `contradiction_drift`, `semi_real_trace`, `locomo_like_trace`, `longmem_like_trace`)
    - per-turn trace logs
-   - significance summary vs `HiDrift-full`
+   - significance summary vs `HiDrift-full` with Holm-Bonferroni correction
 
 ### Drift threshold calibration artifact
 ```powershell
@@ -234,8 +240,9 @@ pip install -e ".[dev,api]"
 Suggested loop:
 1. Edit feature/config/tests
 2. Run `pytest -q`
-3. Run `python scripts/run_eval.py`
+3. Run `python scripts/run_eval_matrix.py --config configs/eval/matrix_publishable.json`
 4. Run `python scripts/export_figures.py`
 5. Review `paper/tables/significance_report.md` for p-values/effect sizes
-6. Review `paper/figures/scenario_success_heatmap.png` and trace plots for discriminative behavior
+6. Review `paper/tables/hypothesis_results.md` and `paper/tables/cost_latency_table.md`
+7. Review `paper/figures/scenario_success_heatmap.png` and trace plots for discriminative behavior
 7. Update docs when behavior or contracts change

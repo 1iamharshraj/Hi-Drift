@@ -14,6 +14,7 @@ HiDrift is a long-horizon agent memory stack with:
 3. Hybrid semantic memory retrieval (vector + graph)
 4. Consolidation from episodes to semantic facts
 5. Reproducible testing and reporting pipeline
+6. Benchmark adapter layer for internal + external trace suites
 
 ## 3. Runtime Components
 
@@ -149,6 +150,8 @@ File: `configs/drift/default.yaml`
 Files:
 1. `configs/eval/default.yaml`
 2. `configs/eval/seeds.yaml`
+3. `configs/eval/benchmark_manifest.json`
+4. `configs/eval/matrix_publishable.json`
 
 ## 7. API Contract
 Implemented in `src/hidrift/api.py`.
@@ -220,14 +223,31 @@ Command:
 python scripts/run_eval.py
 ```
 
+Key options:
+1. `--benchmark-profile` (`internal_v1`, `external_v1`, `mixed_v1`, `publishable_v1`)
+2. `--benchmark-manifest` (JSON file for external traces)
+3. `--systems` and `--seeds` for targeted sweeps
+
+### 10.2 Run publishable matrix
+Command:
+```powershell
+python scripts/run_eval_matrix.py --config configs/eval/matrix_publishable.json
+```
+
 Generates:
+1. Multiple `artifacts/eval_<uuid>.json` reports (one per run block)
+2. `artifacts/eval_matrix_<uuid>.json` index of matrix run IDs and metadata
+
+### 10.3 Eval report contents
+Each report stores:
 1. `artifacts/eval_<uuid>.json`
 2. `systems` (baseline/ablation matrix)
 3. `scenario_reports` (per-scenario aggregates)
 4. `traces` (per-turn observability logs)
-5. `significance_vs_hidrift_full` (paired permutation p-values + effect sizes)
+5. `significance_vs_hidrift_full` (paired permutation p-values + effect sizes + Holm-adjusted p-values)
+6. `benchmark_protocol` (seeds, profile, scenario list, reference system)
 
-### 10.2 Calibrate drift threshold
+### 10.4 Calibrate drift threshold
 Command:
 ```powershell
 python scripts/train_calibrator.py
@@ -249,6 +269,9 @@ Outputs:
 2. Statistical tables:
    - `paper/tables/significance_report.md`
    - `paper/tables/scenario_metrics.md`
+   - `paper/tables/hypothesis_results.md`
+   - `paper/tables/cost_latency_table.md`
+   - `paper/tables/qualitative_failure_cases.md`
 3. Charts:
    - `paper/figures/task_success_with_errorbars.png`
    - `paper/figures/adaptation_latency_distribution.png`
@@ -306,7 +329,7 @@ pip install -e ".[dev,api]"
 ## 14. Limitations
 1. Semantic graph backend is local `networkx`, not distributed
 2. Benchmark realism improved but still includes synthetic-heavy components
-3. Statistical tests currently use paired permutation + effect size; no multi-comparison correction pipeline yet
+3. Statistical tests use paired permutation + effect size + Holm-Bonferroni correction, but benchmark diversity is still limited to included traces
 4. Vector memory is lightweight in-process rather than dedicated vector DB
 
 ## 15. Future Extension Points
