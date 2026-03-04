@@ -61,7 +61,13 @@ class MemoryService:
             start_ts=event.timestamp.astimezone(timezone.utc),
             end_ts=event.timestamp.astimezone(timezone.utc),
             goal=event.task_label or "general_assistance",
-            actions=[{"agent_output": event.agent_output, "tool_calls": event.tool_calls}],
+            actions=[
+                {
+                    "user_input": event.user_input,
+                    "agent_output": event.agent_output,
+                    "tool_calls": event.tool_calls,
+                }
+            ],
             outcomes=[{"reward": event.reward}],
             reward_sum=reward,
             embedding=embed_text(combined_text),

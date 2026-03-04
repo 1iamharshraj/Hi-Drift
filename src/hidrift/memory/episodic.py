@@ -42,6 +42,19 @@ class EpisodicMemory:
             del self._episodes[eid]
         return len(to_delete)
 
+    def prune_to_top_n(self, n: int) -> int:
+        if n <= 0 or len(self._episodes) <= n:
+            return 0
+        ranked = sorted(
+            self._episodes.values(),
+            key=lambda e: (e.importance, e.usage_count, e.end_ts.timestamp()),
+            reverse=True,
+        )
+        keep_ids = {e.episode_id for e in ranked[:n]}
+        to_delete = [eid for eid in self._episodes if eid not in keep_ids]
+        for eid in to_delete:
+            del self._episodes[eid]
+        return len(to_delete)
+
     def __len__(self) -> int:
         return len(self._episodes)
-

@@ -27,7 +27,11 @@ def compute_metrics(records: list[dict]) -> EvalMetrics:
     constraint_violations = sum(1 for r in records if r.get("constraint_violated", False))
     bloat = records[-1]["memory_items"]
     latency_vals = [r["latency"] for r in records if r["latency"] is not None]
-    adaptation_latency = sum(latency_vals) / len(latency_vals) if latency_vals else 0.0
+    if latency_vals:
+        adaptation_latency = sum(latency_vals) / len(latency_vals)
+    else:
+        # If the system never recovers after drift, assign max-penalty latency.
+        adaptation_latency = float(len(records))
     turn_latency_vals = [float(r.get("turn_latency_ms", 0.0)) for r in records]
     consolidation_events = sum(1 for r in records if r.get("consolidation_event", False))
     mean_success = successes / len(records)

@@ -38,8 +38,37 @@ class SemanticMemory:
         self._items[item.memory_id] = item
         return True
 
+    def _find_fact_id_by_triple(self, subject: str, relation: str, object_value: str) -> str | None:
+        for fact_id, fact in self._facts.items():
+            if fact.subject == subject and fact.relation == relation and fact.object == object_value:
+                return fact_id
+        return None
+
     def upsert_fact(self, fact: SemanticFact) -> None:
-        self._facts[fact.fact_id] = fact
+        existing_id = self._find_fact_id_by_triple(fact.subject, fact.relation, fact.object)
+        if existing_id is not None and existing_id != fact.fact_id:
+            existing = self._facts[existing_id]
+            merged_evidence = sorted(set(existing.evidence_episode_ids) | set(fact.evidence_episode_ids))
+            merged_drift = sorted(set(existing.drift_event_ids) | set(fact.drift_event_ids))
+            merged_tags = sorted(set(existing.tags) | set(fact.tags))
+            updated = existing.model_copy(
+                update={
+                    "statement": fact.statement if len(fact.statement) > len(existing.statement) else existing.statement,
+                    "confidence": max(existing.confidence, fact.confidence),
+                    "stability": max(existing.stability, fact.stability),
+                    "embedding": fact.embedding or existing.embedding,
+                    "version": max(existing.version, fact.version) + 1,
+                    "last_validated_at": fact.last_validated_at,
+                    "evidence_episode_ids": merged_evidence,
+                    "drift_event_ids": merged_drift,
+                    "tags": merged_tags,
+                    "is_active": True,
+                }
+            )
+            self._facts[existing_id] = updated
+            fact = updated
+        else:
+            self._facts[fact.fact_id] = fact
         self.graph.upsert_node(
             GraphNode(
                 node_id=fact.fact_id,

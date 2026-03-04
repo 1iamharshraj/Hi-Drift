@@ -23,8 +23,12 @@ class ConsolidationWorker:
         self.dedup_threshold = dedup_threshold
 
     async def run_once(self, min_importance: float = 0.1, decay_k: float = 0.08) -> dict[str, int]:
+        self.memory_service.episodic.apply_decay(k=decay_k)
+        pruned_low = self.memory_service.episodic.prune_below(min_importance=min_importance)
+        # Keep episodic memory bounded after consolidation to realize compaction gains.
+        pruned_cap = self.memory_service.episodic.prune_to_top_n(40)
         episodes = self.memory_service.episodic.all()
-        apply_exponential_decay(episodes, k=decay_k)
+        apply_exponential_decay(episodes, k=0.0)
         kept = prune_low_importance(episodes, min_importance=min_importance)
         clusters = cluster_episodes(kept)
 
@@ -78,4 +82,6 @@ class ConsolidationWorker:
             "semantic_created": created,
             "facts_created": facts_created,
             "episodes_seen": len(episodes),
+            "episodes_pruned_low_importance": pruned_low,
+            "episodes_pruned_capacity": pruned_cap,
         }

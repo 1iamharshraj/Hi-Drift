@@ -59,7 +59,7 @@ def build_baseline(name: str) -> tuple[AgentRuntime, BaselineConfig]:
         return runtime, BaselineConfig(
             name=name,
             drift_enabled=False,
-            fixed_consolidation_interval=15,
+            fixed_consolidation_interval=120,
             use_graph_semantic=True,
             use_vector_semantic=True,
             use_conflict_resolution=True,

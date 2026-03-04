@@ -54,7 +54,7 @@ def extract_semantic_facts(goal: str, episodes: list[EpisodeRecord], llm_client:
     avg_reward = sum(e.reward_sum for e in episodes) / max(len(episodes), 1)
     obj = "high_success_strategy" if avg_reward >= 0.6 else "needs_adjustment"
     relation = "RULE_FOR"
-    return [
+    facts = [
         {
             "statement": statement,
             "fact_type": "task_policy",
@@ -68,3 +68,51 @@ def extract_semantic_facts(goal: str, episodes: list[EpisodeRecord], llm_client:
             "tags": [goal, "consolidated"],
         }
     ]
+    style_counts = {"concise": 0, "detailed": 0, "bullet": 0}
+    schema_counts = {"v1": 0, "v2": 0}
+    for ep in episodes:
+        if not ep.actions:
+            continue
+        user_input = str(ep.actions[0].get("user_input", "")).lower()
+        for style in style_counts:
+            if style in user_input:
+                style_counts[style] += 1
+        for version in schema_counts:
+            token = f"api {version}"
+            if token in user_input or f"schema {version}" in user_input:
+                schema_counts[version] += 1
+
+    dominant_style, style_votes = max(style_counts.items(), key=lambda kv: kv[1])
+    if style_votes > 0:
+        facts.append(
+            {
+                "statement": f"For {goal}, preferred response style is {dominant_style}.",
+                "fact_type": "user_preference",
+                "subject": goal,
+                "relation": "PREFERS",
+                "object": dominant_style,
+                "confidence": max(0.4, min(0.95, 0.5 + 0.05 * style_votes)),
+                "stability": max(0.0, min(1.0, avg_reward if avg_reward >= 0 else 0.0)),
+                "valid_from": datetime.now(timezone.utc),
+                "valid_to": None,
+                "tags": [goal, "style", dominant_style],
+            }
+        )
+
+    dominant_schema, schema_votes = max(schema_counts.items(), key=lambda kv: kv[1])
+    if schema_votes > 0:
+        facts.append(
+            {
+                "statement": f"For {goal}, active tool schema is {dominant_schema}.",
+                "fact_type": "environment_state",
+                "subject": goal,
+                "relation": "USES_SCHEMA",
+                "object": dominant_schema,
+                "confidence": max(0.4, min(0.95, 0.5 + 0.05 * schema_votes)),
+                "stability": max(0.0, min(1.0, avg_reward if avg_reward >= 0 else 0.0)),
+                "valid_from": datetime.now(timezone.utc),
+                "valid_to": None,
+                "tags": [goal, "schema", dominant_schema],
+            }
+        )
+    return facts
