@@ -32,6 +32,6 @@
       "passed": true
     }
   ],
-  "eval_report_path": "artifacts\\eval_31c52767-4313-4008-bdb3-19c30445afdb.json",
+  "eval_report_path": "artifacts\\eval_c6f75513-44f6-4c5b-b894-7b33ebb6678b.json",
   "registry_path": "configs/eval/benchmark_registry.json"
 }

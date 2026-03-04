@@ -12,6 +12,7 @@ Upgrade HiDrift from prototype evaluation to publishable-grade evidence pipeline
 - [x] M6: Tests updated for new report schema and robustness
 - [x] M7: Docs fully aligned with publishable workflow
 - [x] M8: Automated publication readiness gates
+- [x] M9: Publication gates passing on current matrix report
 
 ## Task Board
 
@@ -46,3 +47,4 @@ Upgrade HiDrift from prototype evaluation to publishable-grade evidence pipeline
 - [x] Update TESTING with benchmark/stat validation
 - [x] Update ARCHITECTURE with benchmark/report flow
 - [x] Add explicit publication gate outputs and commands
+- [x] Record latest PASS status artifacts for publication checks

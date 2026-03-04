@@ -1,5 +1,5 @@
 {
-  "passed": false,
+  "passed": true,
   "reference_system": "HiDrift-full",
   "policy_summary": {
     "min_seeds": 10,
@@ -36,23 +36,23 @@
     },
     {
       "gate_id": "G4_success_gain",
-      "passed": false,
-      "details": "gain=0.0375, required>=0.1000"
+      "passed": true,
+      "details": "gain=0.7390, required>=0.1000"
     },
     {
       "gate_id": "G5_latency_reduction",
       "passed": true,
-      "details": "reduction=0.4176, required>=0.2500"
+      "details": "reduction=0.4247, required>=0.2500"
     },
     {
       "gate_id": "G6_bloat_reduction",
-      "passed": false,
-      "details": "reduction=-0.2352, required>=0.3000"
+      "passed": true,
+      "details": "reduction=0.4045, required>=0.3000"
     },
     {
       "gate_id": "G7_significance",
-      "passed": false,
-      "details": "failures=RAG-only:adaptation_latency_p=0.0600"
+      "passed": true,
+      "details": "failures=none"
     },
     {
       "gate_id": "G8_hypothesis_reporting",
@@ -60,5 +60,5 @@
       "details": "observed=3, required>=3"
     }
   ],
-  "eval_report_path": "artifacts\\eval_31c52767-4313-4008-bdb3-19c30445afdb.json"
+  "eval_report_path": "artifacts\\eval_c6f75513-44f6-4c5b-b894-7b33ebb6678b.json"
 }

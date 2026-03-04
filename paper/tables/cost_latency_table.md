@@ -1,12 +1,12 @@
 | System | Avg Turn Latency (ms) | Consolidation Events / 100 turns | Memory Bloat |
 | --- | --- | --- | --- |
-| RAG-only | 0.964 | 0.000 | 63.000 |
-| HierMemory-noDrift | 1.592 | 3.333 | 69.333 |
-| VectorOnly-noGraph | 4.187 | 60.875 | 77.817 |
-| GraphOnly-noVector | 3.668 | 60.875 | 77.817 |
-| MemGPT-style | 1.106 | 4.167 | 70.667 |
-| GenerativeAgents-style | 1.061 | 5.000 | 71.833 |
-| FlatMem-TopK | 1.008 | 0.000 | 63.000 |
-| HiDrift-noConflict | 3.831 | 60.875 | 77.817 |
-| HiDrift-noDriftSignal | 1.163 | 2.500 | 67.833 |
-| HiDrift-full | 3.804 | 60.875 | 77.817 |
+| RAG-only | 4.567 | 0.000 | 63.000 |
+| HierMemory-noDrift | 5.405 | 0.417 | 25.500 |
+| VectorOnly-noGraph | 6.632 | 60.875 | 37.517 |
+| GraphOnly-noVector | 5.875 | 60.875 | 37.517 |
+| MemGPT-style | 1.284 | 4.167 | 25.867 |
+| GenerativeAgents-style | 1.299 | 5.000 | 25.867 |
+| FlatMem-TopK | 1.647 | 0.000 | 63.000 |
+| HiDrift-noConflict | 15.679 | 60.875 | 37.517 |
+| HiDrift-noDriftSignal | 4.134 | 2.500 | 25.750 |
+| HiDrift-full | 8.537 | 60.875 | 37.517 |
