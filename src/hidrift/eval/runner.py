@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+import time
 import uuid
 from collections import defaultdict
 from dataclasses import asdict
@@ -10,7 +11,7 @@ from pathlib import Path
 from hidrift.eval.baselines import BaselineConfig, build_baseline
 from hidrift.eval.metrics import EvalMetrics, compute_metrics
 from hidrift.eval.simulator import SimScenario, build_benchmark_suite
-from hidrift.eval.stats import cohen_d, paired_permutation_pvalue, summarize_metric
+from hidrift.eval.stats import cohen_d, holm_bonferroni_adjust, paired_permutation_pvalue, summarize_metric
 
 
 def _style_reward(expected_style: str, model_reply: str) -> float:
@@ -46,6 +47,7 @@ async def _run_single_scenario(system_name: str, cfg: BaselineConfig, seed: int,
     consolidation_count = 0
 
     for i, turn in enumerate(scenario.turns):
+        t0 = time.perf_counter()
         result = await runtime.handle_turn(
             session_id=f"{scenario.name}-{seed}",
             user_id="u-1",
@@ -54,16 +56,21 @@ async def _run_single_scenario(system_name: str, cfg: BaselineConfig, seed: int,
             reward=None,
             task_label=turn.task_label,
         )
+        turn_latency_ms = (time.perf_counter() - t0) * 1000.0
+        consolidation_event = False
         if cfg.fixed_consolidation_interval and (i + 1) % cfg.fixed_consolidation_interval == 0:
             await runtime.consolidation.run_once()
             consolidation_count += 1
+            consolidation_event = True
         if result.get("consolidation"):
             consolidation_count += 1
+            consolidation_event = True
 
         retrieval = runtime.memory.retrieve(turn.oracle_fact)
         precision, recall, hallucinated = _measure_retrieval_hits(cfg, retrieval, turn)
         reward = _style_reward(turn.expected_style, result["event"]["agent_output"])
         success = reward >= 0.75 and precision >= 0.5
+        constraint_violated = hallucinated or (precision < 1.0 and turn.task_label in turn.oracle_fact)
         if i in scenario.drift_turns:
             last_drift_turn = i
             recovered_turn = None
@@ -76,8 +83,11 @@ async def _run_single_scenario(system_name: str, cfg: BaselineConfig, seed: int,
                 "precision": precision,
                 "recall": recall,
                 "hallucinated": hallucinated,
+                "constraint_violated": constraint_violated,
                 "memory_items": len(runtime.memory.episodic) + len(runtime.memory.semantic) + len(runtime.memory.semantic.all_facts()),
                 "latency": latency,
+                "turn_latency_ms": turn_latency_ms,
+                "consolidation_event": consolidation_event,
             }
         )
         traces.append(
@@ -115,6 +125,7 @@ def _significance_against_reference(system_metrics: dict[str, list[dict]], refer
         if system == reference:
             continue
         output[system] = {}
+        raw_pvals: dict[str, float] = {}
         for metric in metric_names:
             a = [v[metric] for v in ref]
             b = [v[metric] for v in vals]
@@ -130,7 +141,45 @@ def _significance_against_reference(system_metrics: dict[str, list[dict]], refer
                 "reference_ci95": [summary_a.ci_low, summary_a.ci_high],
                 "system_ci95": [summary_b.ci_low, summary_b.ci_high],
             }
+            raw_pvals[metric] = p
+        adjusted = holm_bonferroni_adjust(raw_pvals)
+        for metric, adj_p in adjusted.items():
+            output[system][metric]["p_value_holm"] = adj_p
+            output[system][metric]["significant_alpha_0_05"] = adj_p < 0.05
     return output
+
+
+def _hypothesis_decisions(report: dict) -> dict:
+    """
+    H1: HiDrift-full > VectorOnly-noGraph on adaptation latency and success.
+    H2: HiDrift-full > HiDrift-noDriftSignal on adaptation latency.
+    H3: HiDrift-full < HiDrift-noConflict on constraint violations.
+    """
+    systems = report.get("systems", {})
+    out: dict = {}
+    if "HiDrift-full" not in systems:
+        return out
+    hf = systems["HiDrift-full"]["aggregate_mean"]
+    if "VectorOnly-noGraph" in systems:
+        base = systems["VectorOnly-noGraph"]["aggregate_mean"]
+        out["H1"] = {
+            "statement": "HiDrift-full improves over VectorOnly-noGraph on stability-critical metrics",
+            "success_improved": hf["task_success_rate"] > base["task_success_rate"],
+            "latency_improved": hf["adaptation_latency"] < base["adaptation_latency"],
+        }
+    if "HiDrift-noDriftSignal" in systems:
+        base = systems["HiDrift-noDriftSignal"]["aggregate_mean"]
+        out["H2"] = {
+            "statement": "Drift-triggered consolidation reduces adaptation latency",
+            "latency_improved": hf["adaptation_latency"] < base["adaptation_latency"],
+        }
+    if "HiDrift-noConflict" in systems:
+        base = systems["HiDrift-noConflict"]["aggregate_mean"]
+        out["H3"] = {
+            "statement": "Conflict logic reduces constraint violations",
+            "constraint_violation_improved": hf["constraint_violation_rate"] < base["constraint_violation_rate"],
+        }
+    return out
 
 
 def run_experiment(
@@ -152,7 +201,18 @@ def run_experiment(
     out = Path(output_dir)
     out.mkdir(parents=True, exist_ok=True)
     run_id = str(uuid.uuid4())
-    report: dict = {"run_id": run_id, "systems": {}, "scenario_reports": {}, "traces": []}
+    report: dict = {
+        "run_id": run_id,
+        "systems": {},
+        "scenario_reports": {},
+        "traces": [],
+        "benchmark_protocol": {
+            "seeds": seeds,
+            "n_turns": n_turns,
+            "scenarios": ["personal_assistant_drift", "tool_api_drift", "contradiction_drift", "semi_real_trace"],
+            "reference_system": "HiDrift-full",
+        },
+    }
     scenario_reports: dict[str, dict] = defaultdict(dict)
 
     for system in systems:
@@ -195,7 +255,7 @@ def run_experiment(
     report["scenario_reports"] = dict(scenario_reports)
     system_seed_metrics = {s: payload["per_seed"] for s, payload in report["systems"].items()}
     report["significance_vs_hidrift_full"] = _significance_against_reference(system_seed_metrics, reference="HiDrift-full")
+    report["hypothesis_results"] = _hypothesis_decisions(report)
     path = out / f"eval_{run_id}.json"
     path.write_text(json.dumps(report, indent=2), encoding="utf-8")
     return report
-

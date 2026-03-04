@@ -63,3 +63,19 @@ def cohen_d(a: list[float], b: list[float]) -> float:
     pooled = math.sqrt((av + bv) / 2.0) if (av + bv) > 0 else 1.0
     return (am - bm) / pooled
 
+
+def holm_bonferroni_adjust(pvals: dict[str, float]) -> dict[str, float]:
+    """
+    Return Holm-Bonferroni adjusted p-values by metric name.
+    """
+    if not pvals:
+        return {}
+    items = sorted(pvals.items(), key=lambda kv: kv[1])
+    m = len(items)
+    adjusted: dict[str, float] = {}
+    running_max = 0.0
+    for i, (name, p) in enumerate(items, start=1):
+        adj = min(1.0, (m - i + 1) * p)
+        running_max = max(running_max, adj)
+        adjusted[name] = running_max
+    return adjusted

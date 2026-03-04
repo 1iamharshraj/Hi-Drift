@@ -20,5 +20,6 @@ if __name__ == "__main__":
         "n_systems": len(systems),
         "systems": {k: v.get("aggregate_mean", {}) for k, v in systems.items()},
         "scenario_count": len(report.get("scenario_reports", {})),
+        "hypothesis_count": len(report.get("hypothesis_results", {})),
     }
     print(json.dumps(summary, indent=2))
