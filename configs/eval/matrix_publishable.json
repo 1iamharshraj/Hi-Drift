@@ -14,7 +14,7 @@
       "seeds": [11, 22, 33, 44, 55, 66, 77, 88, 99, 111],
       "n_turns": 120,
       "benchmark_profile": "publishable_v1",
-      "benchmark_manifest": "configs/eval/benchmark_manifest.json"
+      "benchmark_manifest": "configs/eval/official_benchmark_manifest.json"
     },
     {
       "name": "ablation_study",
@@ -29,7 +29,7 @@
       "seeds": [11, 22, 33, 44, 55, 66, 77, 88, 99, 111],
       "n_turns": 120,
       "benchmark_profile": "publishable_v1",
-      "benchmark_manifest": "configs/eval/benchmark_manifest.json"
+      "benchmark_manifest": "configs/eval/official_benchmark_manifest.json"
     }
   ]
 }

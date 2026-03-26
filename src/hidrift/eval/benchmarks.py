@@ -78,7 +78,7 @@ def build_scenario_suite(
     scenarios: list[SimScenario] = []
     include_internal = benchmark_profile in {"internal_v1", "publishable_v1", "mixed_v1", "iccv_v1"}
     include_external = benchmark_profile in {"external_v1", "publishable_v1", "mixed_v1"}
-    include_official = benchmark_profile in {"iccv_v1"}
+    include_official = benchmark_profile in {"iccv_v1", "publishable_v1"}
 
     if include_internal:
         scenarios.extend(
