@@ -3,9 +3,10 @@
 ## 1. Purpose
 This document is the detailed technical reference for HiDrift implementation, covering runtime architecture, memory internals, API contracts, configuration semantics, evaluation methodology, and operational workflows.
 
-For diagram-first explanation, see `ARCHITECTURE.md`.  
+For diagram-first explanation, see `ARCHITECTURE.md`.
 For quick operational onboarding, see `README.md`.
 For dedicated test execution and validation flows, see `TESTING.md`.
+For formal mathematical definitions of all algorithms, see `paper/formal_definitions.md`.
 
 ## 2. System Summary
 HiDrift is a long-horizon agent memory stack with:
