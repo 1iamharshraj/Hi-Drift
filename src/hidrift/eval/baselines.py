@@ -41,6 +41,7 @@ def build_baseline(name: str) -> tuple[AgentRuntime, BaselineConfig]:
             memory_service=MemoryService(graph_persistence_path=graph_path),
             drift_service=DriftService(TriggerConfig(threshold=9999.0)),
             config=base_cfg,
+            skip_conflict_resolution=True,
         )
         return runtime, BaselineConfig(
             name=name,
@@ -83,6 +84,7 @@ def build_baseline(name: str) -> tuple[AgentRuntime, BaselineConfig]:
             memory_service=MemoryService(graph_persistence_path=graph_path),
             drift_service=DriftService(TriggerConfig(threshold=0.35, hysteresis_turns=2, cooldown_turns=1)),
             config=base_cfg,
+            skip_conflict_resolution=True,
         )
         return runtime, BaselineConfig(
             name=name,
@@ -111,6 +113,7 @@ def build_baseline(name: str) -> tuple[AgentRuntime, BaselineConfig]:
             memory_service=MemoryService(graph_persistence_path=graph_path),
             drift_service=DriftService(TriggerConfig(threshold=0.35, hysteresis_turns=2, cooldown_turns=1)),
             config=base_cfg,
+            skip_conflict_resolution=True,
         )
         return runtime, BaselineConfig(
             name=name,
@@ -139,6 +142,7 @@ def build_baseline(name: str) -> tuple[AgentRuntime, BaselineConfig]:
             memory_service=MemoryService(graph_persistence_path=graph_path),
             drift_service=DriftService(TriggerConfig(threshold=9999.0)),
             config=base_cfg,
+            skip_conflict_resolution=True,
         )
         return runtime, BaselineConfig(
             name=name,
@@ -153,6 +157,7 @@ def build_baseline(name: str) -> tuple[AgentRuntime, BaselineConfig]:
             memory_service=MemoryService(graph_persistence_path=graph_path),
             drift_service=DriftService(TriggerConfig(threshold=9999.0)),
             config=base_cfg,
+            skip_conflict_resolution=True,
         )
         return runtime, BaselineConfig(
             name=name,
@@ -167,6 +172,7 @@ def build_baseline(name: str) -> tuple[AgentRuntime, BaselineConfig]:
             memory_service=MemoryService(graph_persistence_path=graph_path),
             drift_service=DriftService(TriggerConfig(threshold=9999.0)),
             config=base_cfg,
+            skip_conflict_resolution=True,
         )
         return runtime, BaselineConfig(
             name=name,

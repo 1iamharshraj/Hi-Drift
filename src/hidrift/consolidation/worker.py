@@ -17,10 +17,12 @@ class ConsolidationWorker:
         memory_service: MemoryService,
         llm_client: object | None = None,
         dedup_threshold: float = 0.88,
+        skip_conflict_resolution: bool = False,
     ) -> None:
         self.memory_service = memory_service
         self.llm_client = llm_client
         self.dedup_threshold = dedup_threshold
+        self.skip_conflict_resolution = skip_conflict_resolution
 
     async def run_once(self, min_importance: float = 0.1, decay_k: float = 0.08) -> dict[str, int]:
         self.memory_service.episodic.apply_decay(k=decay_k)
@@ -74,7 +76,8 @@ class ConsolidationWorker:
                 )
                 self.memory_service.semantic.upsert_fact(fact)
                 facts_created += 1
-        self.memory_service.semantic.resolve_conflicts()
+        if not self.skip_conflict_resolution:
+            self.memory_service.semantic.resolve_conflicts()
 
         await asyncio.sleep(0)
         return {

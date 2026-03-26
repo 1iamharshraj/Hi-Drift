@@ -12,7 +12,7 @@ from pathlib import Path
 from hidrift.eval.baselines import BaselineConfig, build_baseline, default_systems
 from hidrift.eval.benchmarks import build_scenario_suite
 from hidrift.eval.metrics import EvalMetrics, compute_metrics
-from hidrift.eval.simulator import SimScenario
+from hidrift.eval.simulator import KNOWN_STYLES, SimScenario
 from hidrift.eval.stats import cohen_d, holm_bonferroni_adjust, paired_permutation_pvalue, summarize_metric
 
 
@@ -53,12 +53,12 @@ def _measure_retrieval_hits(cfg: BaselineConfig, retrieval, turn) -> tuple[float
     hit = task_hit and style_hit
     precision = (float(task_hit) + float(style_hit) + float(oracle_hit)) / 3.0
     recall = precision
-    # Hallucination proxy: semantic constraint contradicts expected style.
-    contradiction = any(
-        (turn.expected_style not in f.get("statement", "").lower()) and (turn.task_label in f.get("statement", "").lower())
+    # Hallucination proxy: a supporting fact explicitly asserts a *different* style for this task.
+    hallucinated = any(
+        turn.task_label in f.get("statement", "").lower()
+        and any(s in f.get("statement", "").lower() for s in KNOWN_STYLES if s != turn.expected_style)
         for f in retrieval.supporting_context
     )
-    hallucinated = contradiction
     return precision, recall, hallucinated
 
 
@@ -93,10 +93,16 @@ async def _run_single_scenario(system_name: str, cfg: BaselineConfig, seed: int,
         retrieval = runtime.memory.retrieve(turn.oracle_fact)
         precision, recall, hallucinated = _measure_retrieval_hits(cfg, retrieval, turn)
         reward = _style_reward(turn.expected_style, result["event"]["agent_output"])
-        # Drift-aware systems with conflict resolution get credit for faster safe adaptation.
-        required_precision = 0.65 if (cfg.drift_enabled and cfg.use_conflict_resolution) else 0.7
+        required_precision = 0.65
         success = reward >= 0.75 and precision >= required_precision
-        constraint_violated = hallucinated or (precision < 1.0 and turn.task_label in turn.oracle_fact)
+        # Constraint violated when a hard constraint asserts a stale style for this task.
+        stale_constraint = any(
+            turn.task_label in str(f.get("subject", "")).lower()
+            and turn.expected_style not in str(f.get("object", "")).lower()
+            and turn.expected_style not in str(f.get("statement", "")).lower()
+            for f in retrieval.hard_constraints
+        )
+        constraint_violated = stale_constraint
         if i in scenario.drift_turns:
             last_drift_turn = i
             recovered_turn = None

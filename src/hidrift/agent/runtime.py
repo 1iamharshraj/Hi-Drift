@@ -28,6 +28,7 @@ class AgentRuntime:
         memory_service: MemoryService | None = None,
         drift_service: DriftService | None = None,
         config: RuntimeConfig | None = None,
+        skip_conflict_resolution: bool = False,
     ) -> None:
         self.config = config or RuntimeConfig()
         self.memory = memory_service or MemoryService()
@@ -37,7 +38,10 @@ class AgentRuntime:
             model_name=self.config.llm_model,
             fail_if_unconfigured=self.config.require_llm,
         )
-        self.consolidation = ConsolidationWorker(self.memory, llm_client=self.llm)
+        self.consolidation = ConsolidationWorker(
+            self.memory, llm_client=self.llm,
+            skip_conflict_resolution=skip_conflict_resolution,
+        )
         self._last_consolidation_stats: dict[str, int] | None = None
 
     async def handle_turn(

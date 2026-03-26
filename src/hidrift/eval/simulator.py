@@ -6,6 +6,9 @@ from dataclasses import dataclass
 import json
 
 
+KNOWN_STYLES = {"concise", "detailed", "bullet"}
+
+
 @dataclass
 class SimTurn:
     user_input: str
